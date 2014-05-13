@@ -168,6 +168,7 @@ section:nth-child(2n) {
   display: block;
   text-decoration: none;
   padding: 3px 0;
+  width: 30px;
 }
 
 #menu ul li a:hover {

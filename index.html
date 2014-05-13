@@ -1,27 +1,19 @@
-<!DOCTYPE html><html><head><title>Koa - next generation web framework for node.js</title><link rel="stylesheet" href="public/style.css"><link rel="stylesheet" href="public/icons/css/slate.css"><link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Italiana&amp;subset=latin"><meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"><script>window.analytics=window.analytics||[],window.analytics.methods=["identify","group","track","page","pageview","alias","ready","on","once","off","trackLink","trackForm","trackClick","trackSubmit"],window.analytics.factory=function(t){return function(){var a=Array.prototype.slice.call(arguments);return a.unshift(t),window.analytics.push(a),window.analytics}};for(var i=0;i<window.analytics.methods.length;i++){var key=window.analytics.methods[i];window.analytics[key]=window.analytics.factory(key)}window.analytics.load=function(t){if(!document.getElementById("analytics-js")){var a=document.createElement("script");a.type="text/javascript",a.id="analytics-js",a.async=!0,a.src=("https:"===document.location.protocol?"https://":"http://")+"cdn.segment.io/analytics.js/v1/"+t+"/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(a,n)}},window.analytics.SNIPPET_VERSION="2.0.9",
+<!DOCTYPE html><html><head><title>Koa - 下一代 node.js web框架</title><link rel="stylesheet" href="public/style.css"><link rel="stylesheet" href="public/icons/css/slate.css"><link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Italiana&amp;subset=latin"><meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script>window.analytics=window.analytics||[],window.analytics.methods=["identify","group","track","page","pageview","alias","ready","on","once","off","trackLink","trackForm","trackClick","trackSubmit"],window.analytics.factory=function(t){return function(){var a=Array.prototype.slice.call(arguments);return a.unshift(t),window.analytics.push(a),window.analytics}};for(var i=0;i<window.analytics.methods.length;i++){var key=window.analytics.methods[i];window.analytics[key]=window.analytics.factory(key)}window.analytics.load=function(t){if(!document.getElementById("analytics-js")){var a=document.createElement("script");a.type="text/javascript",a.id="analytics-js",a.async=!0,a.src=("https:"===document.location.protocol?"https://":"http://")+"cdn.segment.io/analytics.js/v1/"+t+"/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(a,n)}},window.analytics.SNIPPET_VERSION="2.0.9",
 window.analytics.load("9u0xff0b3k");
-window.analytics.page();</script><script src="stats.js"></script></head><body><section id="top"><div id="menu"><a id="toggle" href="#"><i class="icon-menu"></i></a><ul><li><a href="#introduction">Introduction</a></li><li><a href="#application">Application</a></li><li><a href="#context">Context</a></li><li><a href="#request">Request</a></li><li><a href="#response">Response</a></li><li><a href="#links">Links</a></li></ul></div><div id="heading"><div id="logo">Koa</div><div id="tagline">next generation web framework for node.js</div></div></section><section><div class="content"><h1 id="introduction">Introduction</h1><p>Koa is a new web framework designed by the team behind Express,
-which aims to be a smaller, more expressive, and more robust foundation
-for web applications and APIs. Through leveraging generators Koa allows you
-to ditch callbacks and greatly increase error-handling. Koa does not bundle any
-middleware within core, and provides an elegant suite of methods that make
-writing servers fast and enjoyable.
-</p></div></section><section><div class="content"><h1 id="installation">Installation</h1>
-<p> Koa currently requires node 0.11.x for the --harmony flag which exposes generators to your script. If you&#39;re running an earlier version of node you may install <a href="https://github.com/visionmedia/n">n</a>, a node version manager to quickly install 0.11.x:</p>
+window.analytics.page();</script><script src="stats.js"></script></head><body><section id="top"><div id="menu"><a id="toggle" href="#"><i class="icon-menu"></i></a><ul><li><a href="#introduction">简介</a></li><li><a href="#application">应用</a></li><li><a href="#context">内容</a></li><li><a href="#request">请求</a></li><li><a href="#response">响应</a></li><li><a href="#links">链接</a></li></ul></div><div id="heading"><div id="logo">Koa</div><div id="tagline">下一代 node.js web 框架</div></div></section><section><div class="content"><h1 id="introduction">框架简介</h1><p>Koa 是由Express原班人马设计的全新web框架，意在为web应用打造一个更小、更简洁、更健壮的基础框架。通过引入 <a href="http://jlongster.com/A-Study-on-Solving-Callbacks-with-JavaScript-Generators" target="_blank">generator</a> ，Koa允许您避免过度使用回调函数并极大提高了错误处理能力。 Koa核心库中不绑定任何中间件，只提供使您能快速、有趣低撰写服务器应用的核心方法。
+</p></div></section><section><div class="content"><h1 id="-">安装</h1>
+<p>  Koa 目前需要 &gt;=0.11.x版本的node环境。并需要在执行node的时候附带 --harmony来引入generators。 如果您安装了较旧版本的node，您可以安装 <a href="https://github.com/visionmedia/n">n</a> (node版本控制器)，来快速安装 0.11.x</p>
 <pre><code>$ npm install -g n
 $ n 0.11.12
 $ node --harmony my-koa-app.js</code></pre>
-<h1 id="application">Application</h1>
-<p>  A Koa application is an object containing an array of middleware generator functions
-  which are composed and executed in a stack-like manner upon request. Koa is similar to many
-  other middleware systems that you may have encountered such as Ruby&#39;s Rack, Connect, and so on -
-  however a key design decision was made to provide high level &quot;sugar&quot; at the otherwise low-level
-  middleware layer. This improves interoperability, robustness, and makes writing middleware much
-  more enjoyable.</p>
-<p>  This includes methods for common tasks like content-negotiation, cache freshness, proxy support, and redirection
-  among others. Despite supplying a reasonably large number of helpful methods Koa maintains a small footprint, as
-  no middleware are bundled.</p>
-<p>  The obligatory hello world application:</p>
+<h1 id="-">应用</h1>
+<p>  Kao应用是一个包含一系列中间件generator函数的对象。
+  这些中间件函数以一个类似于栈的结构在request请求上组成并依次执行。
+  Koa类似于其他中间件系统(比如Ruby&#39;s Rack、Connect等)。
+  Koa的核心设计思路是提供低层中间件的高层语法糖封装，其增强了互用性、健壮性，并使得编写中间件相当有趣。</p>
+<p>  Koa包含了像content-negotiation(内容控制)、cache freshness(缓存刷新)、proxy support(代理支持)和redirection(重定向)等常用任务方法。
+  与提供庞大的函数支持不同，Koa只包含很小的一部分，因为Koa并不绑定任何中间件。</p>
+<p>  任何教程都是从 hello world 开始的，Koa也不例外^_^  </p>
 <pre><code class="lang-js">var koa = require(&#39;koa&#39;);
 var app = koa();
 
@@ -30,18 +22,13 @@ app.use(function *(){
 });
 
 app.listen(3000);</code></pre>
-<h2 id="cascading">Cascading</h2>
-<p>  Koa middleware cascade in a more traditional way as you may be used to with similar tools -
-  this was previously difficult to make user friendly with node&#39;s use of callbacks.
-  However with generators we can achieve &quot;true&quot; middleware. Contrasting Connect&#39;s implementation which
-  simply passes control through series of functions until one returns, Koa yields &quot;downstream&quot;, then
-  control flows back &quot;upstream&quot;.</p>
-<p>  The following example responds with &quot;Hello World&quot;, however first the request flows through
-  the <code>x-response-time</code> and <code>logging</code> middleware to mark when the request started, then continue
-  to yield control through the response middleware. When a middleware invokes <code>yield next</code>
-  the function suspends and passes control to the next middleware defined. After there are no more
-  middleware to execute downstream, the stack will unwind and each middleware is resumed to perform
-  its upstream behaviour.</p>
+<h2 id="-">中间件级联</h2>
+<p>  Koa的中间件通过一种更加传统(你也许会很熟悉)的方式进行级联，摒弃了以往node频繁的回调函数造成的复杂代码逻辑。
+  我们通过generators来实现“真正的”中间件。
+  Connect简单地将控制权交给一系列函数来处理，直到函数返回。
+  与之不同，当执行到 <code>yield next</code> 语句时，Koa 暂停了该中间件，继续执行下一个符合请求的中间件(&#39;downstrem&#39;)，然后控制权再逐级返回给上层中间件(&#39;upstream&#39;)。</p>
+<p>  下面的例子在页面中返回 &quot;Hello World&quot;，然而当请求开始时，请求先经过 <code>x-response-time</code> 和 <code>logging</code> 中间件，并记录中间件执行起始时间。
+  然后讲控制权交给 <code>reponse</code> 中间件。当中间件运行到 <code>yield next</code> 时，函数挂起并将控制前交给下一个中间件。当没有中间件执行 <code>yield next</code>时，程序栈会逆序唤起被挂起的中间件来执行接下来的代码。</p>
 <pre><code class="lang-js">var koa = require(&#39;koa&#39;);
 var app = koa();
 
@@ -204,7 +191,7 @@ throw err;</code></pre>
   details.</p>
 <h3 id="ctx-respond">ctx.respond</h3>
 <p>  To bypass Koa&#39;s built-in response handling, you may explicitly set <code>this.respond = false;</code>. Use this if you want to write to the raw <code>res</code> object instead of letting Koa handle the response for you.</p>
-<p>  Note that using this is <strong>not</strong> supported by Koa. This may break intended functionality of Koa middleware and Koa itself. Using this properly is considered a hack and is only a convenience to those wishing to use traditional <code>fn(req, res)</code> functions and middleware within Koa.</p>
+<p>  Note that using this is <strong>not</strong> supported by Koa. This may break intended functionality of Koa middleware and Koa itself. Using this property is considered a hack and is only a convenience to those wishing to use traditional <code>fn(req, res)</code> functions and middleware within Koa.</p>
 <h2 id="request-aliases">Request aliases</h2>
 <p>  The following accessors and alias <a href="#request">Request</a> equivalents:</p>
 <ul>
@@ -213,6 +200,7 @@ throw err;</code></pre>
 <li><code>ctx.method=</code></li>
 <li><code>ctx.url</code></li>
 <li><code>ctx.url=</code></li>
+<li><code>ctx.originalUrl</code></li>
 <li><code>ctx.path</code></li>
 <li><code>ctx.path=</code></li>
 <li><code>ctx.query</code></li>
@@ -220,7 +208,7 @@ throw err;</code></pre>
 <li><code>ctx.querystring</code></li>
 <li><code>ctx.querystring=</code></li>
 <li><code>ctx.host</code></li>
-<li><code>ctx.host=</code></li>
+<li><code>ctx.hostname</code></li>
 <li><code>ctx.fresh</code></li>
 <li><code>ctx.stale</code></li>
 <li><code>ctx.socket</code></li>
@@ -273,6 +261,8 @@ throw err;</code></pre>
 <p>  Get request URL.</p>
 <h3 id="req-url-">req.url=</h3>
 <p>  Set request URL, useful for url rewrites.</p>
+<h3 id="req-originalurl">req.originalUrl</h3>
+<p>  Get request original URL.</p>
 <h3 id="req-path">req.path</h3>
 <p>  Get request pathname.</p>
 <h3 id="req-path-">req.path=</h3>
@@ -286,10 +276,11 @@ throw err;</code></pre>
 <h3 id="req-search-">req.search=</h3>
 <p>  Set raw query string.</p>
 <h3 id="req-host">req.host</h3>
-<p>  Get host void of port number when present. Supports <code>X-Forwarded-Host</code>
+<p>  Get host (hostname:port) when present. Supports <code>X-Forwarded-Host</code>
   when <code>app.proxy</code> is <strong>true</strong>, otherwise <code>Host</code> is used.</p>
-<h3 id="req-host-">req.host=</h3>
-<p>  Set the <code>Host</code> header field to a new value.</p>
+<h3 id="req-hostname">req.hostname</h3>
+<p>  Get hostname when present. Supports <code>X-Forwarded-Host</code>
+  when <code>app.proxy</code> is <strong>true</strong>, otherwise <code>Host</code> is used.</p>
 <h3 id="req-type">req.type</h3>
 <p>  Get request <code>Content-Type</code> void of parameters such as &quot;charset&quot;.</p>
 <pre><code class="lang-js">var ct = this.request.type;
@@ -640,6 +631,4 @@ this.body = &#39;Redirecting to shopping cart&#39;;</code></pre>
 <p>  Append <code>val</code> to header <code>field</code>.</p>
 <h3 id="res-vary-field-">res.vary(field)</h3>
 <p>  Vary on <code>field</code>.</p>
-</div></section><section><div class="content"><h1 id="links">Links</h1><p>Community links to discover third-party middleware for Koa, full runnable examples,
-thorough guides and more! If you have questions join us in IRC!
-</p><ul><li><a href="https://github.com/koajs/koa">GitHub repository</a></li><li><a href="https://github.com/koajs/examples">Examples</a></li><li><a href="https://github.com/koajs/koa/wiki">Middleware</a></li><li><a href="https://github.com/koajs/koa/wiki">Wiki</a></li><li><a href="https://plus.google.com/communities/101845768320796750641">G+ Community</a></li><li><a href="https://groups.google.com/forum/#!forum/koajs">Mailing list</a></li><li><a href="https://github.com/koajs/koa/blob/master/docs/guide.md">Guide</a></li><li><a href="https://github.com/koajs/koa/blob/master/docs/faq.md">FAQ</a></li><li><strong>#koajs</strong> on freenode</li></ul></div></section></body></html>
+</div></section><section><div class="content"><h1 id="links">链接</h1><p>提供Koa 第三方中间件的社区链接。社区里又很多完整可运行的例子，详尽的文档。如果您有任何问题，请在IRC中联系我们。</p><ul><li><a href="https://github.com/koajs/koa">GitHub项目</a></li><li><a href="https://github.com/koajs/examples">示例</a></li><li><a href="https://github.com/koajs/koa/wiki">中间件</a></li><li><a href="https://github.com/koajs/koa/wiki">Wiki</a></li><li><a href="https://plus.google.com/communities/101845768320796750641">G+ 社区</a></li><li><a href="https://groups.google.com/forum/#!forum/koajs">邮件列表</a></li><li><a href="https://github.com/koajs/koa/blob/master/docs/guide.md">文档</a></li><li><a href="https://github.com/koajs/koa/blob/master/docs/faq.md">FAQ</a></li><!-- li: <strong>#koajs</strong> on freenode --></ul></div></section></body></html>

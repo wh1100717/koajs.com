@@ -1,11 +1,12 @@
 doctype html
 html
   head
-    title Koa - next generation web framework for node.js
+    title Koa - 下一代 node.js web框架
     link(rel='stylesheet', href='public/style.css')
     link(rel='stylesheet', href='public/icons/css/slate.css')
     link(rel='stylesheet', href='http://fonts.googleapis.com/css?family=Italiana&subset=latin')
     meta(name='viewport', content='user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0')
+    meta(http-equiv='Content-Type', content='text/html; charset=UTF-8')
     script.
       window.analytics=window.analytics||[],window.analytics.methods=["identify","group","track","page","pageview","alias","ready","on","once","off","trackLink","trackForm","trackClick","trackSubmit"],window.analytics.factory=function(t){return function(){var a=Array.prototype.slice.call(arguments);return a.unshift(t),window.analytics.push(a),window.analytics}};for(var i=0;i<window.analytics.methods.length;i++){var key=window.analytics.methods[i];window.analytics[key]=window.analytics.factory(key)}window.analytics.load=function(t){if(!document.getElementById("analytics-js")){var a=document.createElement("script");a.type="text/javascript",a.id="analytics-js",a.async=!0,a.src=("https:"===document.location.protocol?"https://":"http://")+"cdn.segment.io/analytics.js/v1/"+t+"/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(a,n)}},window.analytics.SNIPPET_VERSION="2.0.9",
       window.analytics.load("9u0xff0b3k");
@@ -16,27 +17,22 @@ html
       #menu
         a#toggle(href='#'): i.icon-menu
         ul
-          li: a(href='#introduction') Introduction
-          li: a(href='#application') Application
-          li: a(href='#context') Context
-          li: a(href='#request') Request
-          li: a(href='#response') Response
-          li: a(href='#links') Links
+          li: a(href='#introduction') 简介
+          li: a(href='#application') 应用
+          li: a(href='#context') 内容
+          li: a(href='#request') 请求
+          li: a(href='#response') 响应
+          li: a(href='#links') 链接
 
       #heading
         #logo Koa
-        #tagline next generation web framework for node.js
+        #tagline 下一代 node.js web 框架
 
     section
       .content
-        h1#introduction Introduction
+        h1#introduction 框架简介
         p.
-          Koa is a new web framework designed by the team behind Express,
-          which aims to be a smaller, more expressive, and more robust foundation
-          for web applications and APIs. Through leveraging generators Koa allows you
-          to ditch callbacks and greatly increase error-handling. Koa does not bundle any
-          middleware within core, and provides an elegant suite of methods that make
-          writing servers fast and enjoyable.
+          Koa 是由Express原班人马设计的全新web框架，意在为web应用打造一个更小、更简洁、更健壮的基础框架。通过引入 <a href="http://jlongster.com/A-Study-on-Solving-Callbacks-with-JavaScript-Generators" target="_blank">generator</a> ，Koa允许您避免过度使用回调函数并极大提高了错误处理能力。 Koa核心库中不绑定任何中间件，只提供使您能快速、有趣低撰写服务器应用的核心方法。
 
     section
       .content
@@ -56,18 +52,16 @@ html
 
     section
       .content
-        h1#links Links
+        h1#links 链接
         p.
-          Community links to discover third-party middleware for Koa, full runnable examples,
-          thorough guides and more! If you have questions join us in IRC!
-
+          提供Koa 第三方中间件的社区链接。社区里又很多完整可运行的例子，详尽的文档。如果您有任何问题，请在IRC中联系我们。
         ul
-          li: a(href='https://github.com/koajs/koa') GitHub repository
-          li: a(href='https://github.com/koajs/examples') Examples
-          li: a(href='https://github.com/koajs/koa/wiki') Middleware
+          li: a(href='https://github.com/koajs/koa') GitHub项目
+          li: a(href='https://github.com/koajs/examples') 示例
+          li: a(href='https://github.com/koajs/koa/wiki') 中间件
           li: a(href='https://github.com/koajs/koa/wiki') Wiki
-          li: a(href='https://plus.google.com/communities/101845768320796750641') G+ Community
-          li: a(href='https://groups.google.com/forum/#!forum/koajs') Mailing list
-          li: a(href='https://github.com/koajs/koa/blob/master/docs/guide.md') Guide
+          li: a(href='https://plus.google.com/communities/101845768320796750641') G+ 社区
+          li: a(href='https://groups.google.com/forum/#!forum/koajs') 邮件列表
+          li: a(href='https://github.com/koajs/koa/blob/master/docs/guide.md') 文档
           li: a(href='https://github.com/koajs/koa/blob/master/docs/faq.md') FAQ
-          li: <strong>#koajs</strong> on freenode
+          <!-- li: <strong>#koajs</strong> on freenode -->
