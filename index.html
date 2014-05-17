@@ -1,17 +1,17 @@
 <!DOCTYPE html><html><head><title>Koa - 下一代 node.js web框架</title><link rel="stylesheet" href="public/style.css"><link rel="stylesheet" href="public/icons/css/slate.css"><link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Italiana&amp;subset=latin"><meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script>window.analytics=window.analytics||[],window.analytics.methods=["identify","group","track","page","pageview","alias","ready","on","once","off","trackLink","trackForm","trackClick","trackSubmit"],window.analytics.factory=function(t){return function(){var a=Array.prototype.slice.call(arguments);return a.unshift(t),window.analytics.push(a),window.analytics}};for(var i=0;i<window.analytics.methods.length;i++){var key=window.analytics.methods[i];window.analytics[key]=window.analytics.factory(key)}window.analytics.load=function(t){if(!document.getElementById("analytics-js")){var a=document.createElement("script");a.type="text/javascript",a.id="analytics-js",a.async=!0,a.src=("https:"===document.location.protocol?"https://":"http://")+"cdn.segment.io/analytics.js/v1/"+t+"/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(a,n)}},window.analytics.SNIPPET_VERSION="2.0.9",
 window.analytics.load("9u0xff0b3k");
-window.analytics.page();</script><script src="stats.js"></script></head><body><section id="top"><div id="menu"><a id="toggle" href="#"><i class="icon-menu"></i></a><ul><li><a href="#introduction">简介</a></li><li><a href="#application">应用</a></li><li><a href="#context">内容</a></li><li><a href="#request">请求</a></li><li><a href="#response">响应</a></li><li><a href="#links">链接</a></li></ul></div><div id="heading"><div id="logo">Koa</div><div id="tagline">下一代 node.js web 框架</div></div></section><section><div class="content"><h1 id="introduction">框架简介</h1><p>Koa 是由Express原班人马设计的全新web框架，意在为web应用打造一个更小、更简洁、更健壮的基础框架。通过引入 <a href="http://jlongster.com/A-Study-on-Solving-Callbacks-with-JavaScript-Generators" target="_blank">generator</a> ，Koa允许您避免过度使用回调函数并极大提高了错误处理能力。 Koa核心库中不绑定任何中间件，只提供使您能快速、有趣低撰写服务器应用的核心方法。
+window.analytics.page();</script><script src="stats.js"></script></head><body><section id="top"><div id="menu"><a id="toggle" href="#"><i class="icon-menu"></i></a><ul><li><a href="#introduction">简介</a></li><li><a href="#application">应用</a></li><li><a href="#context">内容</a></li><li><a href="#request">请求</a></li><li><a href="#response">响应</a></li><li><a href="#links">链接</a></li></ul></div><div id="heading"><div id="logo">Koa</div><div id="tagline">下一代 node.js web 框架</div></div></section><section><div class="content"><h1 id="introduction">框架简介</h1><p>Koa 是由Express原班人马设计的全新web框架，意在为web应用打造一个更小、更简洁、更健壮的基础框架。通过引入 <a href="http://jlongster.com/A-Study-on-Solving-Callbacks-with-JavaScript-Generators" target="_blank">generator</a> ，Koa允许您避免过度使用回调函数并极大提高错误处理能力。 Koa核心库中不绑定任何中间件，只提供使您能快速、有趣低撰写服务器应用的核心方法。
 </p></div></section><section><div class="content"><h1 id="-">安装</h1>
-<p>  Koa 目前需要 &gt;=0.11.x版本的node环境。并需要在执行node的时候附带 --harmony来引入generators。 如果您安装了较旧版本的node，您可以安装 <a href="https://github.com/visionmedia/n">n</a> (node版本控制器)，来快速安装 0.11.x</p>
+<p>  Koa 目前需要 &gt;=0.11.x版本的 node 环境。并需要在执行 node 的时候附带 --harmony 来引入 generators 。 如果您安装了较旧版本的 node ，您可以安装 <a href="https://github.com/visionmedia/n">n</a> (node版本控制器)，来快速安装 0.11.x</p>
 <pre><code>$ npm install -g n
 $ n 0.11.12
 $ node --harmony my-koa-app.js</code></pre>
 <h1 id="-">应用</h1>
-<p>  Kao应用是一个包含一系列中间件generator函数的对象。
-  这些中间件函数以一个类似于栈的结构在request请求上组成并依次执行。
-  Koa类似于其他中间件系统(比如Ruby&#39;s Rack、Connect等)。
-  Koa的核心设计思路是提供低层中间件的高层语法糖封装，其增强了互用性、健壮性，并使得编写中间件相当有趣。</p>
-<p>  Koa包含了像content-negotiation(内容控制)、cache freshness(缓存刷新)、proxy support(代理支持)和redirection(重定向)等常用任务方法。
+<p>  Koa 应用是一个包含一系列中间件 generator 函数的对象。
+  这些中间件函数基于 request 请求以一个类似于栈的结构组成并依次执行。
+  Koa 类似于其他中间件系统（比如 Ruby&#39;s Rack 、Connect 等），
+  然而 Koa 的核心设计思路是为中间件层提供高级语法糖封装，以增强其互用性和健壮性，并使得编写中间件变得相当有趣。</p>
+<p>  Koa 包含了像 content-negotiation（内容协商）、cache freshness（缓存刷新）、proxy support（代理支持）和 redirection（重定向）等常用任务方法。
   与提供庞大的函数支持不同，Koa只包含很小的一部分，因为Koa并不绑定任何中间件。</p>
 <p>  任何教程都是从 hello world 开始的，Koa也不例外^_^  </p>
 <pre><code class="lang-js">var koa = require(&#39;koa&#39;);
@@ -23,12 +23,12 @@ app.use(function *(){
 
 app.listen(3000);</code></pre>
 <h2 id="-">中间件级联</h2>
-<p>  Koa的中间件通过一种更加传统(你也许会很熟悉)的方式进行级联，摒弃了以往node频繁的回调函数造成的复杂代码逻辑。
-  我们通过generators来实现“真正的”中间件。
-  Connect简单地将控制权交给一系列函数来处理，直到函数返回。
+<p>  Koa 的中间件通过一种更加传统（你也许会很熟悉）的方式进行级联，摒弃了以往 node 频繁的回调函数造成的复杂代码逻辑。
+  我们通过 generators 来实现“真正”的中间件。
+  Connect 简单地将控制权交给一系列函数来处理，直到函数返回。
   与之不同，当执行到 <code>yield next</code> 语句时，Koa 暂停了该中间件，继续执行下一个符合请求的中间件(&#39;downstrem&#39;)，然后控制权再逐级返回给上层中间件(&#39;upstream&#39;)。</p>
 <p>  下面的例子在页面中返回 &quot;Hello World&quot;，然而当请求开始时，请求先经过 <code>x-response-time</code> 和 <code>logging</code> 中间件，并记录中间件执行起始时间。
-  然后讲控制权交给 <code>reponse</code> 中间件。当中间件运行到 <code>yield next</code> 时，函数挂起并将控制前交给下一个中间件。当没有中间件执行 <code>yield next</code>时，程序栈会逆序唤起被挂起的中间件来执行接下来的代码。</p>
+  然后将控制权交给 <code>reponse</code> 中间件。当中间件运行到 <code>yield next</code> 时，函数挂起并将控制前交给下一个中间件。当没有中间件执行 <code>yield next</code> 时，程序栈会逆序唤起被挂起的中间件来执行接下来的代码。</p>
 <pre><code class="lang-js">var koa = require(&#39;koa&#39;);
 var app = koa();
 
@@ -57,21 +57,18 @@ app.use(function *(){
 });
 
 app.listen(3000);</code></pre>
-<h2 id="settings">Settings</h2>
-<p>  Application settings are properties on the <code>app</code> instance, currently
-  the following are supported:</p>
+<h2 id="-">配置</h2>
+<p>  应用配置是 <code>app</code> 实例属性，目前支持的配置项如下：</p>
 <ul>
-<li><code>app.name</code> optionally give your application a name</li>
-<li><code>app.env</code> defaulting to the <strong>NODE_ENV</strong> or &quot;development&quot;</li>
-<li><code>app.proxy</code> when true proxy header fields will be trusted</li>
-<li><code>app.subdomainOffset</code> offset of <code>.subdomains</code> to ignore [2]</li>
+<li><code>app.name</code> 应用名称（可选项）</li>
+<li><code>app.env</code> 默认为 <strong>NODE_ENV</strong> 或者 <code>development</code></li>
+<li><code>app.proxy</code> 如果为 <code>true</code>，则解析 &quot;Host&quot; 的 header 域，并支持 <code>X-Forwarded-Host</code></li>
+<li><code>app.subdomainOffset</code> 默认为2，表示 <code>.subdomains</code> 所忽略的字符偏移量。</li>
 </ul>
 <h2 id="app-listen-">app.listen(...)</h2>
-<p>  A Koa application is not a 1-to-1 representation of a HTTP server.
-  One or more Koa applications may be mounted together to form larger
-  applications with a single HTTP server.</p>
-<p>  Create and return an HTTP server, passing the given arguments to
-  <code>Server#listen()</code>. These arguments are documented on <a href="http://nodejs.org/api/http.html#http_server_listen_port_hostname_backlog_callback">nodejs.org</a>. The following is a useless Koa application bound to port <code>3000</code>:</p>
+<p>  Koa 应用并非是一个 1-to-1 表征关系的 HTTP 服务器。
+  一个或多个Koa应用可以被挂载到一起组成一个包含单一 HTTP 服务器的大型应用群。</p>
+<p>  如下为一个绑定3000端口的简单 Koa 应用，其创建并返回了一个 HTTP 服务器，为 <code>Server#listen()</code> 传递指定参数（参数的详细文档请查看<a href="http://nodejs.org/api/http.html#http_server_listen_port_hostname_backlog_callback">nodejs.org</a>）。</p>
 <pre><code class="lang-js">var koa = require(&#39;koa&#39;);
 var app = koa();
 app.listen(3000);</code></pre>

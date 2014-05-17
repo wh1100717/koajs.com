@@ -1,6 +1,6 @@
 # 安装
 
-  Koa 目前需要 >=0.11.x版本的node环境。并需要在执行node的时候附带 --harmony来引入generators。 如果您安装了较旧版本的node，您可以安装 [n](https://github.com/visionmedia/n) (node版本控制器)，来快速安装 0.11.x
+  Koa 目前需要 >=0.11.x版本的 node 环境。并需要在执行 node 的时候附带 --harmony 来引入 generators 。 如果您安装了较旧版本的 node ，您可以安装 [n](https://github.com/visionmedia/n) (node版本控制器)，来快速安装 0.11.x
 
 ```
 $ npm install -g n
@@ -10,12 +10,12 @@ $ node --harmony my-koa-app.js
 
 # 应用
 
-  Kao应用是一个包含一系列中间件generator函数的对象。
-  这些中间件函数以一个类似于栈的结构在request请求上组成并依次执行。
-  Koa类似于其他中间件系统(比如Ruby's Rack、Connect等)。
-  Koa的核心设计思路是提供低层中间件的高层语法糖封装，其增强了互用性、健壮性，并使得编写中间件相当有趣。
+  Koa 应用是一个包含一系列中间件 generator 函数的对象。
+  这些中间件函数基于 request 请求以一个类似于栈的结构组成并依次执行。
+  Koa 类似于其他中间件系统（比如 Ruby's Rack 、Connect 等），
+  然而 Koa 的核心设计思路是为中间件层提供高级语法糖封装，以增强其互用性和健壮性，并使得编写中间件变得相当有趣。
 
-  Koa包含了像content-negotiation(内容控制)、cache freshness(缓存刷新)、proxy support(代理支持)和redirection(重定向)等常用任务方法。
+  Koa 包含了像 content-negotiation（内容协商）、cache freshness（缓存刷新）、proxy support（代理支持）和 redirection（重定向）等常用任务方法。
   与提供庞大的函数支持不同，Koa只包含很小的一部分，因为Koa并不绑定任何中间件。
 
   任何教程都是从 hello world 开始的，Koa也不例外^_^  
@@ -33,13 +33,13 @@ app.listen(3000);
 
 ## 中间件级联
 
-  Koa的中间件通过一种更加传统(你也许会很熟悉)的方式进行级联，摒弃了以往node频繁的回调函数造成的复杂代码逻辑。
-  我们通过generators来实现“真正的”中间件。
-  Connect简单地将控制权交给一系列函数来处理，直到函数返回。
+  Koa 的中间件通过一种更加传统（你也许会很熟悉）的方式进行级联，摒弃了以往 node 频繁的回调函数造成的复杂代码逻辑。
+  我们通过 generators 来实现“真正”的中间件。
+  Connect 简单地将控制权交给一系列函数来处理，直到函数返回。
   与之不同，当执行到 `yield next` 语句时，Koa 暂停了该中间件，继续执行下一个符合请求的中间件('downstrem')，然后控制权再逐级返回给上层中间件('upstream')。
 
   下面的例子在页面中返回 "Hello World"，然而当请求开始时，请求先经过 `x-response-time` 和 `logging` 中间件，并记录中间件执行起始时间。
-  然后将控制权交给 `reponse` 中间件。当中间件运行到 `yield next` 时，函数挂起并将控制前交给下一个中间件。当没有中间件执行 `yield next`时，程序栈会逆序唤起被挂起的中间件来执行接下来的代码。
+  然后将控制权交给 `reponse` 中间件。当中间件运行到 `yield next` 时，函数挂起并将控制前交给下一个中间件。当没有中间件执行 `yield next` 时，程序栈会逆序唤起被挂起的中间件来执行接下来的代码。
 
 ```js
 var koa = require('koa');
@@ -72,24 +72,21 @@ app.use(function *(){
 app.listen(3000);
 ```
 
-## Settings
+## 配置
 
-  Application settings are properties on the `app` instance, currently
-  the following are supported:
+  应用配置是 `app` 实例属性，目前支持的配置项如下：
 
-  - `app.name` optionally give your application a name
-  - `app.env` defaulting to the __NODE_ENV__ or "development"
-  - `app.proxy` when true proxy header fields will be trusted
-  - `app.subdomainOffset` offset of `.subdomains` to ignore [2]
+  - `app.name` 应用名称（可选项）
+  - `app.env` 默认为 __NODE_ENV__ 或者 `development`
+  - `app.proxy` 如果为 `true`，则解析 "Host" 的 header 域，并支持 `X-Forwarded-Host`
+  - `app.subdomainOffset` 默认为2，表示 `.subdomains` 所忽略的字符偏移量。
 
 ## app.listen(...)
 
-  A Koa application is not a 1-to-1 representation of a HTTP server.
-  One or more Koa applications may be mounted together to form larger
-  applications with a single HTTP server.
+  Koa 应用并非是一个 1-to-1 表征关系的 HTTP 服务器。
+  一个或多个Koa应用可以被挂载到一起组成一个包含单一 HTTP 服务器的大型应用群。
 
-  Create and return an HTTP server, passing the given arguments to
-  `Server#listen()`. These arguments are documented on [nodejs.org](http://nodejs.org/api/http.html#http_server_listen_port_hostname_backlog_callback). The following is a useless Koa application bound to port `3000`:
+  如下为一个绑定3000端口的简单 Koa 应用，其创建并返回了一个 HTTP 服务器，为 `Server#listen()` 传递指定参数（参数的详细文档请查看[nodejs.org](http://nodejs.org/api/http.html#http_server_listen_port_hostname_backlog_callback)）。
 
 ```js
 var koa = require('koa');

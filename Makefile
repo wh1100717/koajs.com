@@ -1,4 +1,3 @@
-
 RAW = https://raw.githubusercontent.com
 
 DOCS = public/index.md \
@@ -34,3 +33,4 @@ clean:
 	rm -fr *.html $(DOCS)
 
 .PHONY: clean
+
