@@ -1,6 +1,6 @@
 <!DOCTYPE html><html><head><title>Koa - 下一代 node.js web框架</title><link rel="stylesheet" href="public/style.css"><link rel="stylesheet" href="public/icons/css/slate.css"><link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Italiana&amp;subset=latin"><meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script>window.analytics=window.analytics||[],window.analytics.methods=["identify","group","track","page","pageview","alias","ready","on","once","off","trackLink","trackForm","trackClick","trackSubmit"],window.analytics.factory=function(t){return function(){var a=Array.prototype.slice.call(arguments);return a.unshift(t),window.analytics.push(a),window.analytics}};for(var i=0;i<window.analytics.methods.length;i++){var key=window.analytics.methods[i];window.analytics[key]=window.analytics.factory(key)}window.analytics.load=function(t){if(!document.getElementById("analytics-js")){var a=document.createElement("script");a.type="text/javascript",a.id="analytics-js",a.async=!0,a.src=("https:"===document.location.protocol?"https://":"http://")+"cdn.segment.io/analytics.js/v1/"+t+"/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(a,n)}},window.analytics.SNIPPET_VERSION="2.0.9",
 window.analytics.load("9u0xff0b3k");
-window.analytics.page();</script><script src="stats.js"></script></head><body><section id="top"><div id="menu"><a id="toggle" href="#"><i class="icon-menu"></i></a><ul><li><a href="#introduction">简介</a></li><li><a href="#application">应用</a></li><li><a href="#context">内容</a></li><li><a href="#request">请求</a></li><li><a href="#response">响应</a></li><li><a href="#links">链接</a></li></ul></div><div id="heading"><div id="logo">Koa</div><div id="tagline">下一代 node.js web 框架</div></div></section><section><div class="content"><h1 id="introduction">框架简介</h1><p>Koa 是由Express原班人马设计的全新web框架，意在为web应用打造一个更小、更简洁、更健壮的基础框架。通过引入 <a href="http://jlongster.com/A-Study-on-Solving-Callbacks-with-JavaScript-Generators" target="_blank">generator</a> ，Koa允许您避免过度使用回调函数并极大提高错误处理能力。 Koa核心库中不绑定任何中间件，只提供使您能快速、有趣低撰写服务器应用的核心方法。
+window.analytics.page();</script><script src="stats.js"></script></head><body><section id="top"><div id="menu"><a id="toggle" href="#"><i class="icon-menu"></i></a><ul><li><a href="#introduction">简介</a></li><li><a href="#application">应用</a></li><li><a href="#context">上下文</a></li><li><a href="#request">请求</a></li><li><a href="#response">响应</a></li><li><a href="#links">链接</a></li></ul></div><div id="heading"><div id="logo">Koa</div><div id="tagline">下一代 node.js web 框架</div></div></section><section><div class="content"><h1 id="introduction">框架简介</h1><p>Koa 是由Express原班人马设计的全新web框架，意在为web应用打造一个更小、更简洁、更健壮的基础框架。通过引入 <a href="http://jlongster.com/A-Study-on-Solving-Callbacks-with-JavaScript-Generators" target="_blank">generator</a> ，Koa允许您避免过度使用回调函数并极大提高错误处理能力。 Koa核心库中不绑定任何中间件，只提供使您能快速、有趣低撰写服务器应用的核心方法。
 </p></div></section><section><div class="content"><h1 id="-">安装</h1>
 <p>  Koa 目前需要 &gt;=0.11.x版本的 node 环境。并需要在执行 node 的时候附带 --harmony 来引入 generators 。 如果您安装了较旧版本的 node ，您可以安装 <a href="https://github.com/visionmedia/n">n</a> (node版本控制器)，来快速安装 0.11.x</p>
 <pre><code>$ npm install -g n
@@ -106,31 +106,24 @@ app.keys = new KeyGrip([&#39;im a newer secret&#39;, &#39;i like turtle&#39;], &
 });</code></pre>
 <p>  当发生错误但仍能够响应客户端时（比如没有数据写到socket中），Koa会返回一个500错误(Internal Server Error)。</p>
 <p>  无论哪种情况，Koa都会生成一个应用级别的错误信息，以便实现日志记录等目的。</p>
-</div></section><section><div class="content"><h1 id="context">Context</h1>
-<p>  A Koa Context encapsulates node&#39;s <code>request</code> and <code>response</code> objects
-  into a single object which provides many helpful methods for writing
-  web applications and APIs.
-  These operations are used so frequently in HTTP server development
-  that they are added at this level instead of a higher level framework,
-  which would force middleware to re-implement this common functionality.</p>
-<p>  A <code>Context</code> is created <em>per</em> request, and is referenced in middleware
-  as the receiver, or the <code>this</code> identifier, as shown in the following
-  snippet:</p>
+</div></section><section><div class="content"><h1 id="context-">Context(上下文)</h1>
+<p>  Koa Context 将 node 的 <code>request</code> 和 <code>response</code> 对象封装在一个单独的对象里面，其为编写 web 应用和 API 提供了很多有用的方法。</p>
+<p>  这些操作在 HTTP 服务器开发中经常使用，因此其被添加在上下文这一层，而不是更高层框架中，因此将迫使中间件需要重新实现这些常用方法。</p>
+<p>  <code>context</code> 在每个 request 请求中被创建，在中间件中作为接收器(receiver)来引用，或者通过 <code>this</code> 标识符来引用：</p>
 <pre><code class="lang-js">app.use(function *(){
   this; // is the Context
   this.request; // is a koa Request
   this.response; // is a koa Response
 });</code></pre>
-<p>  Many of the context&#39;s accessors and methods simply delegate to their <code>ctx.request</code> or <code>ctx.response</code>
-  equivalents for convenience, and are otherwise identical. For example <code>ctx.type</code> and <code>ctx.length</code>
-  delegate to the <code>response</code> object, and <code>ctx.path</code> and <code>ctx.method</code> delegate to the <code>request</code>.</p>
+<p>  许多 context 的访问器和方法为了便于访问和调用，简单的委托给他们的 <code>ctx.request</code> 和 <code>ctx.response</code> 所对应的等价方法，
+  比如说 <code>ctx.type</code> 和 <code>ctx.length</code> 代理了 <code>response</code> 对象中对应的方法，<code>ctx.path</code> 和 <code>ctx.method</code> 代理了 <code>request</code> 对象中对应的方法。</p>
 <h2 id="api">API</h2>
-<p>  <code>Context</code> specific methods and accessors.</p>
+<p>  <code>Context</code> 详细的方法和访问器。</p>
 <h3 id="ctx-req">ctx.req</h3>
-<p>  Node&#39;s <code>request</code> object.</p>
+<p>  Node 的 <code>request</code> 对象。</p>
 <h3 id="ctx-res">ctx.res</h3>
-<p>  Node&#39;s <code>response</code> object.</p>
-<p>  Bypassing Koa&#39;s response handling is <strong>not supported</strong>. Avoid using the following node properties:</p>
+<p>  Node 的 <code>response</code> 对象。</p>
+<p>  Koa <em>不支持</em> 直接调用底层 res 进行响应处理。请避免使用以下 node 属性：</p>
 <ul>
 <li><code>res.statusCode</code></li>
 <li><code>res.writeHead()</code></li>
@@ -138,50 +131,45 @@ app.keys = new KeyGrip([&#39;im a newer secret&#39;, &#39;i like turtle&#39;], &
 <li><code>res.end()</code></li>
 </ul>
 <h3 id="ctx-request">ctx.request</h3>
-<p>  A koa <code>Request</code> object.</p>
+<p>  Koa 的 <code>Request</code> 对象。</p>
 <h3 id="ctx-response">ctx.response</h3>
-<p>  A koa <code>Response</code> object.</p>
+<p>  Koa 的 <code>Response</code> 对象。</p>
 <h3 id="ctx-app">ctx.app</h3>
-<p>  Application instance reference.</p>
+<p>  应用实例引用。</p>
 <h3 id="ctx-cookies-get-name-options-">ctx.cookies.get(name, [options])</h3>
-<p>  Get cookie <code>name</code> with <code>options</code>:</p>
+<p>  获得 cookie 中名为 <code>name</code> 的值，<code>options</code> 为可选参数：</p>
 <ul>
-<li><code>signed</code> the cookie requested should be signed</li>
+<li>&#39;signed&#39;: 如果为 true，表示请求时 cookie 需要进行签名。</li>
 </ul>
-<p>Note: koa uses the <a href="https://github.com/jed/cookies">cookies</a> module where options are simply passed.</p>
+<p>注意：Koa 使用了 Express 的 <a href="https://github.com/jed/cookies">cookies</a> 模块，options 参数只是简单地直接进行传递。</p>
 <h3 id="ctx-cookies-set-name-value-options-">ctx.cookies.set(name, value, [options])</h3>
-<p>  Set cookie <code>name</code> to <code>value</code> with <code>options</code>:</p>
+<p>  设置 cookie 中名为 <code>name</code> 的值，<code>options</code> 为可选参数：</p>
 <ul>
-<li><code>signed</code> sign the cookie value</li>
-<li><code>expires</code> a <code>Date</code> for cookie expiration</li>
-<li><code>path</code> cookie path, <code>/&#39;</code> by default</li>
-<li><code>domain</code> cookie domain</li>
-<li><code>secure</code> secure cookie</li>
-<li><code>httpOnly</code> server-accessible cookie, <strong>true</strong> by default</li>
+<li><code>signed</code>: 是否要做签名</li>
+<li><code>expires</code>: cookie 有效期时间</li>
+<li><code>path</code>: cookie 的路径，默认为 <code>/&#39;</code></li>
+<li><code>domain</code>: cookie 的域</li>
+<li><code>secure</code>: false 表示 cookie 通过 HTTP 协议发送，true 表示 cookie 通过 HTTPS 发送。</li>
+<li><code>httpOnly</code>: true 表示 cookie 只能通过 HTTP 协议发送</li>
 </ul>
-<p>Note: koa uses the <a href="https://github.com/jed/cookies">cookies</a> module where options are simply passed.</p>
+<p>注意：Koa 使用了 Express 的 <a href="https://github.com/jed/cookies">cookies</a> 模块，options 参数只是简单地直接进行传递。</p>
 <h3 id="ctx-throw-msg-status-">ctx.throw(msg, [status])</h3>
-<p>  Helper method to throw an error with a <code>.status</code> property
-  defaulting to <code>500</code> that will allow Koa to respond appropriately.
-  The following combinations are allowed:</p>
+<p>  抛出包含 <code>.status</code> 属性的错误，默认为 <code>500</code>。该方法可以让 Koa 准确的响应处理状态。
+  Koa支持以下组合：</p>
 <pre><code class="lang-js">this.throw(403)
 this.throw(&#39;name required&#39;, 400)
 this.throw(400, &#39;name required&#39;)
 this.throw(&#39;something exploded&#39;)</code></pre>
-<p>  For example <code>this.throw(&#39;name required&#39;, 400)</code> is equivalent to:</p>
+<p>  <code>this.throw(&#39;name required&#39;, 400)</code> 等价于：</p>
 <pre><code class="lang-js">var err = new Error(&#39;name required&#39;);
 err.status = 400;
 throw err;</code></pre>
-<p>  Note that these are user-level errors and are flagged with
-  <code>err.expose</code> meaning the messages are appropriate for
-  client responses, which is typically not the case for
-  error messages since you do not want to leak failure
-  details.</p>
+<p>  注意：这些用户级错误被标记为 <code>err.expose</code>，其意味着这些消息被准确描述为对客户端的响应，而并非使用在您不想泄露失败细节的场景中。</p>
 <h3 id="ctx-respond">ctx.respond</h3>
-<p>  To bypass Koa&#39;s built-in response handling, you may explicitly set <code>this.respond = false;</code>. Use this if you want to write to the raw <code>res</code> object instead of letting Koa handle the response for you.</p>
-<p>  Note that using this is <strong>not</strong> supported by Koa. This may break intended functionality of Koa middleware and Koa itself. Using this property is considered a hack and is only a convenience to those wishing to use traditional <code>fn(req, res)</code> functions and middleware within Koa.</p>
+<p>  为了避免使用 Koa 的内置响应处理功能，您可以直接赋值 <code>this.repond = false;</code>。如果您不想让 Koa 来帮助您处理 reponse，而是直接操作原生 <code>res</code> 对象，那么请使用这种方法。</p>
+<p>  注意： 这种方式是不被 Koa 支持的。其可能会破坏 Koa 中间件和 Koa 本身的一些功能。其只作为一种 hack 的方式，并只对那些想要在 Koa 方法和中间件中使用传统 <code>fn(req, res)</code> 方法的人来说会带来便利。</p>
 <h2 id="request-aliases">Request aliases</h2>
-<p>  The following accessors and alias <a href="#request">Request</a> equivalents:</p>
+<p>  以下访问器和别名与 <a href="#request">Request</a> 等价：</p>
 <ul>
 <li><code>ctx.header</code></li>
 <li><code>ctx.method</code></li>
@@ -213,7 +201,7 @@ throw err;</code></pre>
 <li><code>ctx.get()</code></li>
 </ul>
 <h2 id="response-aliases">Response aliases</h2>
-<p>  The following accessors and alias <a href="#response">Response</a> equivalents:</p>
+<p>  以下访问器和别名与 <a href="#response">Response</a> 等价：</p>
 <ul>
 <li><code>ctx.body</code></li>
 <li><code>ctx.body=</code></li>
