@@ -1,30 +1,28 @@
-# Response
+# 响应(Response)
 
-  A Koa `Response` object is an abstraction on top of node's vanilla response object,
-  providing additional functionality that is useful for every day HTTP server
-  development.
+  Koa `Response` 对象是对 node 的 response 进一步抽象和封装，提供了日常 HTTP 服务器开发中一些有用的功能。
 
 ## API
 
 ### res.header
 
-  Response header object.
+  Response header 对象。
 
 ### res.socket
 
-  Request socket.
+  Request socket。
 
 ### res.status
 
-  Get response status. By default, `res.status` is not set unlike node's `res.statusCode` which defaults to `200`.
+  获取 response status。不同于 node 在默认情况下 `res.statusCode` 为200，`res.status` 并没有赋值。
 
 ### res.statusString
 
-  Response status string
+  Response status 字符串。
 
 ### res.status=
 
-  Set response status via numeric code or case-insensitive string:
+  通过 数字状态码或者不区分大小写的字符串来设置response status：
 
   - 100 "continue"
   - 101 "switching protocols"
@@ -83,26 +81,23 @@
   - 510 "not extended"
   - 511 "network authentication required"
 
-__NOTE__: don't worry too much about memorizing these strings,
-if you have a typo an error will be thrown, displaying this list
-so you can make a correction.
+__注意__：不用担心记不住这些字符串，如果您设置错误，会有异常抛出，并列出该状态码表来帮助您进行更正。
 
 ### res.length=
 
-  Set response Content-Length to the given value.
+  通过给定值设置 response Content-Length。
 
 ### res.length
 
-  Return response Content-Length as a number when present, or deduce
-  from `res.body` when possible, or `undefined`.
+  如果 Content-Length 作为数值存在，或者可以通过 `res.body` 来进行计算，则返回相应数值，否则返回 `undefined`。
 
 ### res.body
 
-  Get response body.
+  获得 response body。
 
 ### res.body=
 
-  Set response body to one of the following:
+  设置 response body 为如下值：
 
   - `string` written
   - `Buffer` written
@@ -110,29 +105,28 @@ so you can make a correction.
   - `Object` json-stringified
   - `null` no content response
 
-  If `res.status` has not been set, Koa will automatically set the status to `200` or `204`.
+
+  如果 `res.status` 没有赋值，Koa会自动设置为 `200` 或 `204`。
 
 #### String
 
-  The Content-Type is defaulted to text/html or text/plain, both with
-  a default charset of utf-8. The Content-Length field is also set.
+  Content-Type 默认为 text/html 或者 text/plain，两种默认 charset 均为 utf-8。 Content-Length 同时会被设置。
 
 #### Buffer
 
-  The Content-Type is defaulted to application/octet-stream, and Content-Length
-  is also set.
+  Content-Type 默认为 application/octet-stream，Content-Length同时被设置。
 
 #### Stream
 
-  The Content-Type is defaulted to application/octet-stream.
+  Content-Type 默认为 application/octet-stream。
 
 #### Object
 
-  The Content-Type is defaulted to application/json.
+  Content-Type 默认为 application/json。
 
 ### res.get(field)
 
-  Get a response header field value with case-insensitive `field`.
+  获取 response header 中字段值，field 不区分大小写。
 
 ```js
 var etag = this.get('ETag');
@@ -140,7 +134,7 @@ var etag = this.get('ETag');
 
 ### res.set(field, value)
 
-  Set response header `field` to `value`:
+  设置 response header 字段 `field` 的值为 `value`。
 
 ```js
 this.set('Cache-Control', 'no-cache');
@@ -148,7 +142,7 @@ this.set('Cache-Control', 'no-cache');
 
 ### res.set(fields)
 
-  Set several response header `fields` with an object:
+  使用对象同时设置 response header 中多个字段的值。
 
 ```js
 this.set({
@@ -159,11 +153,11 @@ this.set({
 
 ### res.remove(field)
 
-  Remove header `field`.
+  移除 response header 中字段 `filed`。
 
 ### res.type
 
-  Get response `Content-Type` void of parameters such as "charset".
+  获取 response `Content-Type`，不包含像 "charset" 这样的参数。
 
 ```js
 var ct = this.type;
@@ -172,7 +166,7 @@ var ct = this.type;
 
 ### res.type=
 
-  Set response `Content-Type` via mime string or file extension.
+  通过 mime 类型的字符串或者文件扩展名设置 response `Content-Type`
 
 ```js
 this.type = 'text/plain; charset=utf-8';
@@ -181,18 +175,14 @@ this.type = '.png';
 this.type = 'png';
 ```
 
-  Note: when appropriate a `charset` is selected for you, for
-  example `res.type = 'html'` will default to "utf-8", however
-  when explicitly defined in full as `res.type = 'text/html'`
-  no charset is assigned.
+  注意：当可以根据 `res.type` 确定一个合适的 `charset` 时，`charset` 会自动被赋值。
+  比如 `res.type = 'html'` 时，charset 将会默认设置为 "utf-8"。然而当完整定义为 `res.type = 'text/html'`时，charset 不会自动设置。
 
 ### res.redirect(url, [alt])
 
-  Perform a [302] redirect to `url`.
+  执行 [302] 重定向到对应 `url`。
 
-  The string "back" is special-cased
-  to provide Referrer support, when Referrer
-  is not present `alt` or "/" is used.
+  字符串 "back" 是一个特殊参数，其提供了 Referrer 支持。当没有Referrer时，使用 `alt` 或者 `/` 代替。
 
 ```js
 this.redirect('back');
@@ -201,8 +191,7 @@ this.redirect('/login');
 this.redirect('http://google.com');
 ```
 
-  To alter the default status of `302`, simply assign the status
-  before or after this call. To alter the body, assign it after this call:
+  如果想要修改默认的 [302] 状态，直接在重定向之前或者之后执行即可。如果要修改 body，需要在重定向之前执行。
 
 ```js
 this.status = 301;
@@ -212,23 +201,19 @@ this.body = 'Redirecting to shopping cart';
 
 ### res.attachment([filename])
 
-  Set `Content-Disposition` to "attachment" to signal the client
-  to prompt for download. Optionally specify the `filename` of the
-  download.
+  设置 "attachment" 的 `Content-Disposition`，用于给客户端发送信号来提示下载。filename 为可选参数，用于指定下载文件名。
 
 ### res.headerSent
 
-  Check if a response header has already been sent. Useful for seeing
-  if the client may be notified on error.
+  检查 response header 是否已经发送，用于在发生错误时检查客户端是否被通知。
 
 ### res.lastModified
 
-  Return the `Last-Modified` header as a `Date`, if it exists.
+  如果存在 `Last-Modified`，则以 `Date` 的形式返回。
 
 ### res.lastModified=
 
-  Set the `Last-Modified` header as an appropriate UTC string.
-  You can either set it as a `Date` or date string.
+  以 UTC 格式设置 `Last-Modified`。您可以使用 `Date` 或 date 字符串来进行设置。
 
 ```js
 this.response.lastModified = new Date();
@@ -236,8 +221,7 @@ this.response.lastModified = new Date();
 
 ### res.etag=
 
-  Set the ETag of a response including the wrapped `"`s.
-  Note that there is no corresponding `res.etag` getter.
+  设置 包含 `"`s 的 ETag。注意没有对应的 `res.etag` 来获取其值。
 
 ```js
 this.response.etag = crypto.createHash('md5').update(this.body).digest('hex');
@@ -245,11 +229,11 @@ this.response.etag = crypto.createHash('md5').update(this.body).digest('hex');
 
 ### res.append(field, val)
 
-  Append `val` to header `field`.
+  在 header 的 `field` 后面 追加 `val`。
 
 ### res.vary(field)
 
-  Vary on `field`.
+  相当于执行res.append('Vary', field)。
 
 
 

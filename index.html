@@ -220,7 +220,7 @@ throw err;</code></pre>
 <li><code>ctx.etag=</code></li>
 </ul>
 </div></section><section><div class="content"><h1 id="-request-">请求(Request)</h1>
-<p>  Koa 的 <code>Request</code> 对象是对 node 的 request 进一步抽象和封装，提供了日常 HTTP 服务器开发中一些有用的功能。</p>
+<p>  Koa <code>Request</code> 对象是对 node 的 request 进一步抽象和封装，提供了日常 HTTP 服务器开发中一些有用的功能。</p>
 <h2 id="api">API</h2>
 <h3 id="req-header">req.header</h3>
 <p>  请求头对象</p>
@@ -418,21 +418,19 @@ this.acceptsLanguages();
 <p>  返回请求的socket。</p>
 <h3 id="req-get-field-">req.get(field)</h3>
 <p>  返回请求 header 中对应 field 的值。</p>
-</div></section><section><div class="content"><h1 id="response">Response</h1>
-<p>  A Koa <code>Response</code> object is an abstraction on top of node&#39;s vanilla response object,
-  providing additional functionality that is useful for every day HTTP server
-  development.</p>
+</div></section><section><div class="content"><h1 id="-response-">响应(Response)</h1>
+<p>  Koa <code>Response</code> 对象是对 node 的 response 进一步抽象和风险黄，提供了日常 HTTP 服务器开发中一些有用的功能。</p>
 <h2 id="api">API</h2>
 <h3 id="res-header">res.header</h3>
-<p>  Response header object.</p>
+<p>  Response header 对象。</p>
 <h3 id="res-socket">res.socket</h3>
-<p>  Request socket.</p>
+<p>  Request socket。</p>
 <h3 id="res-status">res.status</h3>
-<p>  Get response status. By default, <code>res.status</code> is not set unlike node&#39;s <code>res.statusCode</code> which defaults to <code>200</code>.</p>
+<p>  获取 response status。不同于 node 在默认情况下 <code>res.statusCode</code> 为200，<code>res.status</code> 并没有赋值。</p>
 <h3 id="res-statusstring">res.statusString</h3>
-<p>  Response status string</p>
+<p>  Response status 字符串。</p>
 <h3 id="res-status-">res.status=</h3>
-<p>  Set response status via numeric code or case-insensitive string:</p>
+<p>  通过 数字状态码或者不区分大小写的字符串来设置response status：</p>
 <ul>
 <li>100 &quot;continue&quot;</li>
 <li>101 &quot;switching protocols&quot;</li>
@@ -491,98 +489,82 @@ this.acceptsLanguages();
 <li>510 &quot;not extended&quot;</li>
 <li>511 &quot;network authentication required&quot;</li>
 </ul>
-<p><strong>NOTE</strong>: don&#39;t worry too much about memorizing these strings,
-if you have a typo an error will be thrown, displaying this list
-so you can make a correction.</p>
+<p><strong>注意</strong>：不用担心记不住这些字符串，如果您设置错误，会有一场抛出，并列出该状态码表来帮助您进行更正。</p>
 <h3 id="res-length-">res.length=</h3>
-<p>  Set response Content-Length to the given value.</p>
+<p>  通过给定值设置 response Content-Length。</p>
 <h3 id="res-length">res.length</h3>
-<p>  Return response Content-Length as a number when present, or deduce
-  from <code>res.body</code> when possible, or <code>undefined</code>.</p>
+<p>  如果 Content-Length 作为数值存在，或者可以通过 <code>res.body</code> 来进行计算，则返回响应数值，否则返回 <code>undefined</code>。</p>
 <h3 id="res-body">res.body</h3>
-<p>  Get response body.</p>
+<p>  获得 response body。</p>
 <h3 id="res-body-">res.body=</h3>
-<p>  Set response body to one of the following:</p>
+<p>  设置 response body 为如下值：</p>
 <ul>
 <li><code>string</code> written</li>
 <li><code>Buffer</code> written</li>
 <li><code>Stream</code> piped</li>
 <li><code>Object</code> json-stringified</li>
-<li><p><code>null</code> no content response</p>
-<p>If <code>res.status</code> has not been set, Koa will automatically set the status to <code>200</code> or <code>204</code>.</p>
-</li>
+<li><code>null</code> no content response</li>
 </ul>
+<p>  如果 <code>res.status</code> 没有赋值，Koa会自动设置为 <code>200</code> 或 <code>204</code>。</p>
 <h4 id="string">String</h4>
-<p>  The Content-Type is defaulted to text/html or text/plain, both with
-  a default charset of utf-8. The Content-Length field is also set.</p>
+<p>  Content-Type 默认为 text/html 或者 text/plain，两种默认 charset 均为 utf-8。 Content-Length 同时会被设置。</p>
 <h4 id="buffer">Buffer</h4>
-<p>  The Content-Type is defaulted to application/octet-stream, and Content-Length
-  is also set.</p>
+<p>  Content-Type 默认为 application/octet-stream，Content-Length同时被设置。</p>
 <h4 id="stream">Stream</h4>
-<p>  The Content-Type is defaulted to application/octet-stream.</p>
+<p>  Content-Type 默认为 application/octet-stream。</p>
 <h4 id="object">Object</h4>
-<p>  The Content-Type is defaulted to application/json.</p>
+<p>  Content-Type 默认为 application/json。</p>
 <h3 id="res-get-field-">res.get(field)</h3>
-<p>  Get a response header field value with case-insensitive <code>field</code>.</p>
+<p>  获取 response header 中字段值，field 不区分大小写。</p>
 <pre><code class="lang-js">var etag = this.get(&#39;ETag&#39;);</code></pre>
 <h3 id="res-set-field-value-">res.set(field, value)</h3>
-<p>  Set response header <code>field</code> to <code>value</code>:</p>
+<p>  设置 response header 字段 <code>field</code> 的值为 <code>value</code>。</p>
 <pre><code class="lang-js">this.set(&#39;Cache-Control&#39;, &#39;no-cache&#39;);</code></pre>
 <h3 id="res-set-fields-">res.set(fields)</h3>
-<p>  Set several response header <code>fields</code> with an object:</p>
+<p>  使用对象同时设置 response header 中多个字段的值。</p>
 <pre><code class="lang-js">this.set({
   &#39;Etag&#39;: &#39;1234&#39;,
   &#39;Last-Modified&#39;: date
 });</code></pre>
 <h3 id="res-remove-field-">res.remove(field)</h3>
-<p>  Remove header <code>field</code>.</p>
+<p>  移除 response header 中字段 <code>filed</code>。</p>
 <h3 id="res-type">res.type</h3>
-<p>  Get response <code>Content-Type</code> void of parameters such as &quot;charset&quot;.</p>
+<p>  获取 response <code>Content-Type</code>，不包含像 &quot;charset&quot; 这样的参数。</p>
 <pre><code class="lang-js">var ct = this.type;
 // =&gt; &quot;image/png&quot;</code></pre>
 <h3 id="res-type-">res.type=</h3>
-<p>  Set response <code>Content-Type</code> via mime string or file extension.</p>
+<p>  通过 mime 类型的字符串或者文件扩展名设置 response <code>Content-Type</code></p>
 <pre><code class="lang-js">this.type = &#39;text/plain; charset=utf-8&#39;;
 this.type = &#39;image/png&#39;;
 this.type = &#39;.png&#39;;
 this.type = &#39;png&#39;;</code></pre>
-<p>  Note: when appropriate a <code>charset</code> is selected for you, for
-  example <code>res.type = &#39;html&#39;</code> will default to &quot;utf-8&quot;, however
-  when explicitly defined in full as <code>res.type = &#39;text/html&#39;</code>
-  no charset is assigned.</p>
+<p>  注意：当可以根据 <code>res.type</code> 确定一个合适的 <code>charset</code> 时，<code>charset</code> 会自动被赋值。
+  比如 <code>res.type = &#39;html&#39;</code> 将会默认设置为 &quot;utf-8&quot;。然而当完整定义为 <code>res.type = &#39;text/html&#39;</code>时，charset不是自动设置。</p>
 <h3 id="res-redirect-url-alt-">res.redirect(url, [alt])</h3>
-<p>  Perform a [302] redirect to <code>url</code>.</p>
-<p>  The string &quot;back&quot; is special-cased
-  to provide Referrer support, when Referrer
-  is not present <code>alt</code> or &quot;/&quot; is used.</p>
+<p>  执行 [302] 重定向到对应 <code>url</code>。</p>
+<p>  字符串 &quot;back&quot; 是一个特殊参数，其提供了 Referrer 支持。当没有Referrer时，使用 <code>alt</code> 或者 <code>/</code> 代替。</p>
 <pre><code class="lang-js">this.redirect(&#39;back&#39;);
 this.redirect(&#39;back&#39;, &#39;/index.html&#39;);
 this.redirect(&#39;/login&#39;);
 this.redirect(&#39;http://google.com&#39;);</code></pre>
-<p>  To alter the default status of <code>302</code>, simply assign the status
-  before or after this call. To alter the body, assign it after this call:</p>
+<p>  如果想要修改默认的 [302] 状态，直接在重定向之前或者之后执行即可。如果要修改 body，需要在重定向之前进行执行。</p>
 <pre><code class="lang-js">this.status = 301;
 this.redirect(&#39;/cart&#39;);
 this.body = &#39;Redirecting to shopping cart&#39;;</code></pre>
 <h3 id="res-attachment-filename-">res.attachment([filename])</h3>
-<p>  Set <code>Content-Disposition</code> to &quot;attachment&quot; to signal the client
-  to prompt for download. Optionally specify the <code>filename</code> of the
-  download.</p>
+<p>  设置 &quot;attachment&quot; 的 <code>Content-Disposition</code>，用于给客户端发送信号来提示下载。filename 为可选参数，用于指定下载文件名。</p>
 <h3 id="res-headersent">res.headerSent</h3>
-<p>  Check if a response header has already been sent. Useful for seeing
-  if the client may be notified on error.</p>
+<p>  检查 response header 是否已经发送，用于在发生错误时检查客户端是否被通知。</p>
 <h3 id="res-lastmodified">res.lastModified</h3>
-<p>  Return the <code>Last-Modified</code> header as a <code>Date</code>, if it exists.</p>
+<p>  如果存在 <code>Last-Modified</code>，则以 <code>Date</code> 的形式返回。</p>
 <h3 id="res-lastmodified-">res.lastModified=</h3>
-<p>  Set the <code>Last-Modified</code> header as an appropriate UTC string.
-  You can either set it as a <code>Date</code> or date string.</p>
+<p>  以 UTC 格式设置 <code>Last-Modified</code>。您可以使用 <code>Date</code> 或 data 字符串来进行设置。</p>
 <pre><code class="lang-js">this.response.lastModified = new Date();</code></pre>
 <h3 id="res-etag-">res.etag=</h3>
-<p>  Set the ETag of a response including the wrapped <code>&quot;</code>s.
-  Note that there is no corresponding <code>res.etag</code> getter.</p>
+<p>  设置 包含 <code>&quot;</code>s 的 ETag。注意没有对应的 <code>res.etag</code> 来获取其值。</p>
 <pre><code class="lang-js">this.response.etag = crypto.createHash(&#39;md5&#39;).update(this.body).digest(&#39;hex&#39;);</code></pre>
 <h3 id="res-append-field-val-">res.append(field, val)</h3>
-<p>  Append <code>val</code> to header <code>field</code>.</p>
+<p>  在 header 的 <code>field</code> 后面 追加 <code>val</code>。</p>
 <h3 id="res-vary-field-">res.vary(field)</h3>
-<p>  Vary on <code>field</code>.</p>
+<p>  相当于执行res.append(&#39;Vary&#39;, field)。</p>
 </div></section><section><div class="content"><h1 id="links">链接</h1><p>提供Koa 第三方中间件的社区链接。社区里又很多完整可运行的例子，详尽的文档。如果您有任何问题，请在IRC中联系我们。</p><ul><li><a href="https://github.com/koajs/koa">GitHub项目</a></li><li><a href="https://github.com/koajs/examples">示例</a></li><li><a href="https://github.com/koajs/koa/wiki">中间件</a></li><li><a href="https://github.com/koajs/koa/wiki">Wiki</a></li><li><a href="https://plus.google.com/communities/101845768320796750641">G+ 社区</a></li><li><a href="https://groups.google.com/forum/#!forum/koajs">邮件列表</a></li><li><a href="https://github.com/koajs/koa/blob/master/docs/guide.md">文档</a></li><li><a href="https://github.com/koajs/koa/blob/master/docs/faq.md">FAQ</a></li><!-- li: <strong>#koajs</strong> on freenode --></ul></div></section></body></html>
