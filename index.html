@@ -23,7 +23,7 @@ app.use(function *(){
 
 app.listen(3000);</code></pre>
 <h2 id="-">中间件级联</h2>
-<p>  Koa 的中间件通过一种更加传统（你也许会很熟悉）的方式进行级联，摒弃了以往 node 频繁的回调函数造成的复杂代码逻辑。
+<p>  Koa 的中间件通过一种更加传统（您也许会很熟悉）的方式进行级联，摒弃了以往 node 频繁的回调函数造成的复杂代码逻辑。
   我们通过 generators 来实现“真正”的中间件。
   Connect 简单地将控制权交给一系列函数来处理，直到函数返回。
   与之不同，当执行到 <code>yield next</code> 语句时，Koa 暂停了该中间件，继续执行下一个符合请求的中间件(&#39;downstrem&#39;)，然后控制权再逐级返回给上层中间件(&#39;upstream&#39;)。</p>
@@ -61,7 +61,7 @@ app.listen(3000);</code></pre>
 <p>  应用配置是 <code>app</code> 实例属性，目前支持的配置项如下：</p>
 <ul>
 <li><code>app.name</code> 应用名称（可选项）</li>
-<li><code>app.env</code> 默认为 <strong>NODE_ENV</strong> 或者 <code>development</code></li>
+<li><code>app.env</code> 默认为 __NODE<em>ENV\</em>_ 或者 <code>development</code></li>
 <li><code>app.proxy</code> 如果为 <code>true</code>，则解析 &quot;Host&quot; 的 header 域，并支持 <code>X-Forwarded-Host</code></li>
 <li><code>app.subdomainOffset</code> 默认为2，表示 <code>.subdomains</code> 所忽略的字符偏移量。</li>
 </ul>
@@ -72,49 +72,40 @@ app.listen(3000);</code></pre>
 <pre><code class="lang-js">var koa = require(&#39;koa&#39;);
 var app = koa();
 app.listen(3000);</code></pre>
-<p>  The <code>app.listen(...)</code> method is simply sugar for the following:</p>
+<p>  <code>app.listen(...)</code> 实际上是以下代码的语法糖:</p>
 <pre><code class="lang-js">var http = require(&#39;http&#39;);
 var koa = require(&#39;koa&#39;);
 var app = koa();
 http.createServer(app.callback()).listen(3000);</code></pre>
-<p>  This means you can spin up the same application as both HTTP and HTTPS
-  or on multiple addresses:</p>
+<p>  这意味着您可以同时支持 HTTPS 和 HTTPS，或者在多个端口监听同一个应用。</p>
 <pre><code class="lang-js">var http = require(&#39;http&#39;);
 var koa = require(&#39;koa&#39;);
 var app = koa();
 http.createServer(app.callback()).listen(3000);
 http.createServer(app.callback()).listen(3001);</code></pre>
 <h2 id="app-callback-">app.callback()</h2>
-<p>  Return a callback function suitable for the <code>http.createServer()</code>
-  method to handle a request.
-  You may also use this callback function to mount your koa app in a
-  Connect/Express app.</p>
+<p>  返回一个适合 <code>http.createServer()</code> 方法的回调函数用来处理请求。
+  您也可以使用这个回调函数将您的app挂载在 Connect/Express 应用上。</p>
 <h2 id="app-use-function-">app.use(function)</h2>
-<p>  Add the given middleware function to this application. See <a href="https://github.com/koajs/koa/wiki#middleware">Middleware</a> for
-  more information.</p>
+<p>  为应用添加指定的中间件，详情请看 <a href="https://github.com/koajs/koa/wiki#middleware">Middleware</a></p>
 <h2 id="app-keys-">app.keys=</h2>
-<p> Set signed cookie keys.</p>
-<p> These are passed to <a href="https://github.com/jed/keygrip">KeyGrip</a>,
- however you may also pass your own <code>KeyGrip</code> instance. For
- example the following are acceptable:</p>
+<p>  设置签名Cookie密钥，该密钥会被传递给 <a href="https://github.com/jed/keygrip">KeyGrip</a>。</p>
+<p>  当然，您也可以自己生成 <code>KeyGrip</code> 实例：</p>
 <pre><code class="lang-js">app.keys = [&#39;im a newer secret&#39;, &#39;i like turtle&#39;];
 app.keys = new KeyGrip([&#39;im a newer secret&#39;, &#39;i like turtle&#39;], &#39;sha256&#39;);</code></pre>
-<p>  These keys may be rotated and are used when signing cookies
-  with the <code>{ signed: true }</code> option:</p>
+<p>  在进行cookie签名时，只有设置 <code>signed</code> 为 <code>true</code> 的时候，才会使用密钥进行加密：</p>
 <pre><code class="lang-js">this.cookies.set(&#39;name&#39;, &#39;tobi&#39;, { signed: true });</code></pre>
-<h2 id="error-handling">Error Handling</h2>
-<p>  By default outputs all errors to stderr unless <strong>NODE_ENV</strong> is &quot;test&quot;. To perform custom error-handling logic such as centralized logging you
-  can add an &quot;error&quot; event listener:</p>
+<h2 id="-">错误处理</h2>
+<p>  默认情况下Koa会将所有错误信息输出到 stderr，除非 __NODE_ENV__ 是 &quot;test&quot;。为了实现自定义错误处理逻辑（比如 centralized logging），您可以添加 &quot;error&quot; 事件监听器。</p>
 <pre><code class="lang-js">app.on(&#39;error&#39;, function(err){
   log.error(&#39;server error&#39;, err);
 });</code></pre>
-<p>  If an error in the req/res cycle and it is <em>not</em> possible to respond to the client, the <code>Context</code> instance is also passed:</p>
+<p>  如果错误发生在 请求/响应 环节，并且其不能够响应客户端时，<code>Contenxt</code> 实例也会被传递到 <code>error</code> 事件监听器的回调函数里。</p>
 <pre><code class="lang-js">app.on(&#39;error&#39;, function(err, ctx){
   log.error(&#39;server error&#39;, err, ctx);
 });</code></pre>
-<p>  When an error occurs <em>and</em> it is still possible to respond to the client, aka no data has been written to the socket, Koa will respond
-  appropriately with a 500 &quot;Internal Server Error&quot;. In either case
-  an app-level &quot;error&quot; is emitted for logging purposes.</p>
+<p>  当发生错误但仍能够响应客户端时（比如没有数据写到socket中），Koa会返回一个500错误(Internal Server Error)。</p>
+<p>  无论哪种情况，Koa都会生成一个应用级别的错误信息，以便实现日志记录等目的。</p>
 </div></section><section><div class="content"><h1 id="context">Context</h1>
 <p>  A Koa Context encapsulates node&#39;s <code>request</code> and <code>response</code> objects
   into a single object which provides many helpful methods for writing

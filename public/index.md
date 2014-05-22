@@ -8,6 +8,7 @@ $ n 0.11.12
 $ node --harmony my-koa-app.js
 ```
 
+
 # 应用
 
   Koa 应用是一个包含一系列中间件 generator 函数的对象。
@@ -33,7 +34,7 @@ app.listen(3000);
 
 ## 中间件级联
 
-  Koa 的中间件通过一种更加传统（你也许会很熟悉）的方式进行级联，摒弃了以往 node 频繁的回调函数造成的复杂代码逻辑。
+  Koa 的中间件通过一种更加传统（您也许会很熟悉）的方式进行级联，摒弃了以往 node 频繁的回调函数造成的复杂代码逻辑。
   我们通过 generators 来实现“真正”的中间件。
   Connect 简单地将控制权交给一系列函数来处理，直到函数返回。
   与之不同，当执行到 `yield next` 语句时，Koa 暂停了该中间件，继续执行下一个符合请求的中间件('downstrem')，然后控制权再逐级返回给上层中间件('upstream')。
@@ -77,7 +78,7 @@ app.listen(3000);
   应用配置是 `app` 实例属性，目前支持的配置项如下：
 
   - `app.name` 应用名称（可选项）
-  - `app.env` 默认为 __NODE_ENV__ 或者 `development`
+  - `app.env` 默认为 \_\_NODE_ENV\_\_ 或者 `development`
   - `app.proxy` 如果为 `true`，则解析 "Host" 的 header 域，并支持 `X-Forwarded-Host`
   - `app.subdomainOffset` 默认为2，表示 `.subdomains` 所忽略的字符偏移量。
 
@@ -94,7 +95,7 @@ var app = koa();
 app.listen(3000);
 ```
 
-  The `app.listen(...)` method is simply sugar for the following:
+  `app.listen(...)` 实际上是以下代码的语法糖:
 
 ```js
 var http = require('http');
@@ -103,8 +104,7 @@ var app = koa();
 http.createServer(app.callback()).listen(3000);
 ```
 
-  This means you can spin up the same application as both HTTP and HTTPS
-  or on multiple addresses:
+  这意味着您可以同时支持 HTTPS 和 HTTPS，或者在多个端口监听同一个应用。
 
 ```js
 var http = require('http');
@@ -116,40 +116,33 @@ http.createServer(app.callback()).listen(3001);
 
 ## app.callback()
 
-  Return a callback function suitable for the `http.createServer()`
-  method to handle a request.
-  You may also use this callback function to mount your koa app in a
-  Connect/Express app.
+  返回一个适合 `http.createServer()` 方法的回调函数用来处理请求。
+  您也可以使用这个回调函数将您的app挂载在 Connect/Express 应用上。
 
 ## app.use(function)
 
-  Add the given middleware function to this application. See [Middleware](https://github.com/koajs/koa/wiki#middleware) for
-  more information.
+  为应用添加指定的中间件，详情请看 [Middleware](https://github.com/koajs/koa/wiki#middleware)
 
 ## app.keys=
 
- Set signed cookie keys.
+  设置签名Cookie密钥，该密钥会被传递给 [KeyGrip](https://github.com/jed/keygrip)。
 
- These are passed to [KeyGrip](https://github.com/jed/keygrip),
- however you may also pass your own `KeyGrip` instance. For
- example the following are acceptable:
+  当然，您也可以自己生成 `KeyGrip` 实例：
 
 ```js
 app.keys = ['im a newer secret', 'i like turtle'];
 app.keys = new KeyGrip(['im a newer secret', 'i like turtle'], 'sha256');
 ```
 
-  These keys may be rotated and are used when signing cookies
-  with the `{ signed: true }` option:
+  在进行cookie签名时，只有设置 `signed` 为 `true` 的时候，才会使用密钥进行加密：
 
 ```js
 this.cookies.set('name', 'tobi', { signed: true });
 ```
 
-## Error Handling
+## 错误处理
 
-  By default outputs all errors to stderr unless __NODE_ENV__ is "test". To perform custom error-handling logic such as centralized logging you
-  can add an "error" event listener:
+  默认情况下Koa会将所有错误信息输出到 stderr，除非 \_\_NODE\_ENV\_\_ 是 "test"。为了实现自定义错误处理逻辑（比如 centralized logging），您可以添加 "error" 事件监听器。
 
 ```js
 app.on('error', function(err){
@@ -157,7 +150,7 @@ app.on('error', function(err){
 });
 ```
 
-  If an error in the req/res cycle and it is _not_ possible to respond to the client, the `Context` instance is also passed:
+  如果错误发生在 请求/响应 环节，并且其不能够响应客户端时，`Contenxt` 实例也会被传递到 `error` 事件监听器的回调函数里。
 
 ```js
 app.on('error', function(err, ctx){
@@ -165,8 +158,8 @@ app.on('error', function(err, ctx){
 });
 ```
 
-  When an error occurs _and_ it is still possible to respond to the client, aka no data has been written to the socket, Koa will respond
-  appropriately with a 500 "Internal Server Error". In either case
-  an app-level "error" is emitted for logging purposes.
+  当发生错误但仍能够响应客户端时（比如没有数据写到socket中），Koa会返回一个500错误(Internal Server Error)。
+
+  无论哪种情况，Koa都会生成一个应用级别的错误信息，以便实现日志记录等目的。
 
 
