@@ -1,77 +1,72 @@
-# Request
+# 请求(Request)
 
-  A Koa `Request` object is an abstraction on top of node's vanilla request object,
-  providing additional functionality that is useful for every day HTTP server
-  development.
+  Koa 的 `Request` 对象是对 node 的 request 进一步抽象和封装，提供了日常 HTTP 服务器开发中一些有用的功能。
 
 ## API
 
 ### req.header
 
- Request header object.
+  请求头对象
 
 ### req.method
 
-  Request method.
+  请求方法
 
 ### req.method=
 
-  Set request method, useful for implementing middleware
-  such as `methodOverride()`.
+  设置请求方法，在实现中间件时非常有用，比如 `methodOverride()`。
 
 ### req.length
 
-  Return request Content-Length as a number when present, or `undefined`.
+  以数字的形式返回 request 的内容长度(Content-Length)，或者返回 `undefined`。
 
 ### req.url
 
-  Get request URL.
+  获得请求url地址。
 
 ### req.url=
 
-  Set request URL, useful for url rewrites.
+  设置请求地址，用于重写url地址时。
 
 ### req.originalUrl
 
-  Get request original URL.
+  获取请求原始地址。
 
 ### req.path
 
-  Get request pathname.
+  获取请求路径名。
 
 ### req.path=
 
-  Set request pathname and retain query-string when present.
+  设置请求路径名，并保留请求参数(就是url中?后面的部分)。
 
 ### req.querystring
 
-  Get raw query string void of `?`.
+  获取查询参数字符串(url中?后面的部分)，不包含 ?。
 
 ### req.querystring=
 
-  Set raw query string.
+  设置查询参数。
 
 ### req.search
 
-  Get raw query string with the `?`.
+  获取查询参数字符串，包含 ?。
 
 ### req.search=
 
-  Set raw query string.
+  设置查询参数字符串。
 
 ### req.host
 
-  Get host (hostname:port) when present. Supports `X-Forwarded-Host`
-  when `app.proxy` is __true__, otherwise `Host` is used.
+  获取 host (hostname:port)。 当 `app.proxy` 设置为 __true__ 时，支持 `X-Forwarded-Host`。
 
 ### req.hostname
 
-  Get hostname when present. Supports `X-Forwarded-Host`
-  when `app.proxy` is __true__, otherwise `Host` is used.
+  获取 hostname。当 `app.proxy` 设置为 __true__ 时，支持 `X-Forwarded-Host`。
 
 ### req.type
 
-  Get request `Content-Type` void of parameters such as "charset".
+  获取请求 `Content-Type`，不包含像 "charset" 这样的参数。
 
 ```js
 var ct = this.request.type;
@@ -80,7 +75,7 @@ var ct = this.request.type;
 
 ### req.charset
 
-  Get request charset when present, or `undefined`:
+  获取请求 charset，没有则返回 `undefined`:
 
 ```js
 this.request.charset
@@ -89,11 +84,11 @@ this.request.charset
 
 ### req.query
 
-  Get parsed query-string, returning an empty object when no
-  query-string is present. Note that this getter does _not_
-  support nested parsing.
+  将查询参数字符串进行解析并以对象的形式返回，如果没有查询参数字字符串则返回一个空对象。
 
-  For example "color=blue&size=small":
+  注意：该方法__不__支持嵌套解析。
+
+  比如 "color=blue&size=small":
 
 ```js
 {
@@ -104,8 +99,9 @@ this.request.charset
 
 ### req.query=
 
-  Set query-string to the given object. Note that this
-  setter does _not_ support nested objects.
+  根据给定的对象设置查询参数字符串。
+
+  注意：该方法不支持嵌套对象。
 
 ```js
 this.query = { next: '/login' };
@@ -113,8 +109,7 @@ this.query = { next: '/login' };
 
 ### req.fresh
 
-  Check if a request cache is "fresh", aka the contents have not changed. This
-  method is for cache negotiation between `If-None-Match` / `ETag`, and `If-Modified-Since` and `Last-Modified`. It should be referenced after setting one or more of these response headers.
+  检查请求缓存是否 "fresh"(内容没有发生变化)。该方法用于在 `If-None-Match` / `ETag`, `If-Modified-Since` 和 `Last-Modified` 中进行缓存协调。当在 response headers 中设置一个或多个上述参数后，该方法应该被使用。
 
 ```js
 this.set('ETag', '123');
@@ -132,48 +127,42 @@ this.body = yield db.find('something');
 
 ### req.stale
 
-  Inverse of `req.fresh`.
+  与 `req.fresh` 相反。
 
 ### req.protocol
 
-  Return request protocol, "https" or "http". Supports `X-Forwarded-Proto`
-  when `app.proxy` is __true__.
+  返回请求协议，"https" 或者 "http"。 当 `app.proxy` 设置为 __true__ 时，支持 `X-Forwarded-Host`。
 
 ### req.secure
 
-  Shorthand for `this.protocol == "https"` to check if a request was
-  issued via TLS.
+  简化版 `this.protocol == "https"`，用来检查请求是否通过 TLS 发送。
 
 ### req.ip
 
-  Request remote address. Supports `X-Forwarded-For` when `app.proxy`
-  is __true__.
+  请求远程地址。 当 `app.proxy` 设置为 __true__ 时，支持 `X-Forwarded-Host`。
 
 ### req.ips
 
-  When `X-Forwarded-For` is present and `app.proxy` is enabled an array
-  of these ips is returned, ordered from upstream -> downstream. When disabled
-  an empty array is returned.
+  当 `X-Forwarded-For` 存在并且 `app.proxy` 有效，将会返回一个有序（从 upstream 到 downstream）ip 数组。
+  否则返回一个空数组。
 
 ### req.subdomains
 
-  Return subdomains as an array.
+  以数组形式返回子域名。
 
-  Subdomains are the dot-separated parts of the host before the main domain of
-  the app. By default, the domain of the app is assumed to be the last two
-  parts of the host. This can be changed by setting `app.subdomainOffset`.
+  子域名是在host中逗号分隔的主域名前面的部分。默认情况下，应用的域名假设为host中最后两部分。其可通过设置 `app.subdomainOffset` 进行更改。
 
-  For example, if the domain is "tobi.ferrets.example.com":
-  If `app.subdomainOffset` is not set, this.subdomains is `["ferrets", "tobi"]`.
-  If `app.subdomainOffset` is 3, this.subdomains is `["tobi"]`.
+  举例来说，如果域名是 "tobi.ferrets.example.com":
+
+  如果没有设置 `app.subdomainOffset`，其 subdomains 为 `["ferrets", "tobi"]`。
+  如果设置 `app.subdomainOffset` 为3，其 subdomains 为 `["tobi"]`。
 
 ### req.is(type)
 
-  Check if the incoming request contains the "Content-Type"
-  header field, and it contains any of the give mime `type`s.
-  If there is no request body, `undefined` is returned.
-  If there is no content type, or the match fails `false` is returned.
-  Otherwise, it returns the matching content-type.
+  检查请求所包含的 "Content-Type" 是否为给定的 type 值。
+  如果没有 request body，返回 `undefined`。
+  如果没有 content type，或者匹配失败，返回 `false`。
+  否则返回匹配的 content-type。
 
 ```js
 // With Content-Type: text/html; charset=utf-8
@@ -188,9 +177,8 @@ this.is('html', 'application/*'); // => 'application/json'
 
 this.is('html'); // => false
 ```
-
-  For example if you want to ensure that
-  only images are sent to a given route:
+  
+  比如说您希望保证只有图片发送给指定路由：
 
 ```js
 if (this.is('image/*')) {
@@ -202,24 +190,24 @@ if (this.is('image/*')) {
 
 ### Content Negotiation
 
-  Koa's `request` object includes helpful content negotiation utilities powered by [accepts](http://github.com/expressjs/accepts) and [negotiator](https://github.com/federomero/negotiator). These utilities are:
+  Koa `request` 对象包含 content negotiation 功能（由 [accepts](http://github.com/expressjs/accepts) 和 [negotiator](https://github.com/federomero/negotiator) 提供）：
 
 - `req.accepts(types)`
 - `req.acceptsEncodings(types)`
 - `req.acceptsCharsets(charsets)`
 - `req.acceptsLanguages(langs)`
 
-  If no types are supplied, __all__ acceptable types are returned.
 
-  If multiple types are supplied, the best match will be returned. If no matches are found, a `false` is returned, and you should send a `406 "Not Acceptable"` response to the client.
+  如果没有提供 types，将会返回__所有的__可接受类型。
 
-  In the case of missing accept headers where any type is acceptable, the first type will be returned. Thus, the order of types you supply is important.
+  如果提供多种 types，将会返回最佳匹配类型。如果没有匹配上，则返回 `false`，您应该给客户端返回 `406 "Not Acceptable"`。
+
+  为了防止缺少 accept headers 而导致可以接受任意类型，将会返回第一种类型。因此，您提供的类型顺序非常重要。
 
 ### req.accepts(types)
 
-  Check if the given `type(s)` is acceptable, returning the best match when true, otherwise `false`. The `type` value may be one or more mime type string
-  such as "application/json", the extension name
-  such as "json", or an array `["json", "html", "text/plain"]`.
+  检查给定的类型 `types(s)` 是否可被接受，当为 true 时返回最佳匹配，否则返回 `false`。`type` 的值可以是一个或者多个 mime 类型字符串。
+  比如 "application/json" 扩展名为 "json"，或者数组 `["json", "html", "text/plain"]`。
 
 ```js
 // Accept: text/html
@@ -253,8 +241,7 @@ this.accepts('json', 'html');
 // => "json"
 ```
 
-  You may call `this.accepts()` as may times as you like,
-  or use a switch:
+  `this.accepts()` 可以被调用多次，或者使用 switch:
 
 ```js
 switch (this.accepts('json', 'html', 'text')) {
@@ -267,7 +254,8 @@ switch (this.accepts('json', 'html', 'text')) {
 
 ### req.acceptsEncodings(encodings)
 
-  Check if `encodings` are acceptable, returning the best match when true, otherwise `false`. Note that you should include `identity` as one of the encodings!
+  检查 `encodings` 是否可以被接受，当为 `true` 时返回最佳匹配，否则返回 `false`。
+  注意：您应该在 encodings 中包含 `identity`。
 
 ```js
 // Accept-Encoding: gzip
@@ -278,8 +266,7 @@ this.acceptsEncodings(['gzip', 'deflate', 'identity']);
 // => "gzip"
 ```
 
-  When no arguments are given all accepted encodings
-  are returned as an array:
+  当没有传递参数时，返回包含所有可接受的 encodings 的数组：
 
 ```js
 // Accept-Encoding: gzip, deflate
@@ -287,12 +274,11 @@ this.acceptsEncodings();
 // => ["gzip", "deflate", "identity"]
 ```
 
-  Note that the `identity` encoding (which means no encoding) could be unacceptable if the client explicitly sends `identity;q=0`. Although this is an edge case, you should still handle the case where this method returns `false`.
+  注意：如果客户端直接发送 `identity;q=0` 时，`identity` encoding（表示no encoding） 可以不被接受。虽然这是一个边界情况，您仍然应该处理这种情况。
 
 ### req.acceptsCharsets(charsets)
 
-  Check if `charsets` are acceptable, returning
-  the best match when true, otherwise `false`.
+  检查 `charsets` 是否可以被接受，如果为 `true` 则返回最佳匹配， 否则返回 `false`。
 
 ```js
 // Accept-Charset: utf-8, iso-8859-1;q=0.2, utf-7;q=0.5
@@ -303,8 +289,7 @@ this.acceptsCharsets(['utf-7', 'utf-8']);
 // => "utf-8"
 ```
 
-  When no arguments are given all accepted charsets
-  are returned as an array:
+  当没有传递参数时， 返回包含所有可接受的 charsets 的数组：
 
 ```js
 // Accept-Charset: utf-8, iso-8859-1;q=0.2, utf-7;q=0.5
@@ -314,8 +299,8 @@ this.acceptsCharsets();
 
 ### req.acceptsLanguages(langs)
 
-  Check if `langs` are acceptable, returning
-  the best match when true, otherwise `false`.
+  检查 `langs` 是否可以被接受，如果为 `true` 则返回最佳匹配，否则返回 `false`。
+
 
 ```js
 // Accept-Language: en;q=0.8, es, pt
@@ -326,8 +311,7 @@ this.acceptsLanguages(['en', 'es']);
 // => "es"
 ```
 
-  When no arguments are given all accepted languages
-  are returned as an array:
+  当没有传递参数时，返回包含所有可接受的 langs 的数组：
 
 ```js
 // Accept-Language: en;q=0.8, es, pt
@@ -337,14 +321,14 @@ this.acceptsLanguages();
 
 ### req.idempotent
 
-  Check if the request is idempotent.
+  检查请求是否为幂等(idempotent)。
 
 ### req.socket
 
-  Return the request socket.
+  返回请求的socket。
 
 ### req.get(field)
 
-  Return request header.
+  返回请求 header 中对应 field 的值。
 
 

@@ -61,7 +61,7 @@ app.listen(3000);</code></pre>
 <p>  应用配置是 <code>app</code> 实例属性，目前支持的配置项如下：</p>
 <ul>
 <li><code>app.name</code> 应用名称（可选项）</li>
-<li><code>app.env</code> 默认为 __NODE<em>ENV\</em>_ 或者 <code>development</code></li>
+<li><code>app.env</code> 默认为 <strong>NODE_ENV</strong> 或者 <code>development</code></li>
 <li><code>app.proxy</code> 如果为 <code>true</code>，则解析 &quot;Host&quot; 的 header 域，并支持 <code>X-Forwarded-Host</code></li>
 <li><code>app.subdomainOffset</code> 默认为2，表示 <code>.subdomains</code> 所忽略的字符偏移量。</li>
 </ul>
@@ -96,7 +96,7 @@ app.keys = new KeyGrip([&#39;im a newer secret&#39;, &#39;i like turtle&#39;], &
 <p>  在进行cookie签名时，只有设置 <code>signed</code> 为 <code>true</code> 的时候，才会使用密钥进行加密：</p>
 <pre><code class="lang-js">this.cookies.set(&#39;name&#39;, &#39;tobi&#39;, { signed: true });</code></pre>
 <h2 id="-">错误处理</h2>
-<p>  默认情况下Koa会将所有错误信息输出到 stderr，除非 __NODE_ENV__ 是 &quot;test&quot;。为了实现自定义错误处理逻辑（比如 centralized logging），您可以添加 &quot;error&quot; 事件监听器。</p>
+<p>  默认情况下Koa会将所有错误信息输出到 stderr，除非 <strong>NODE_ENV</strong> 是 &quot;test&quot;。为了实现自定义错误处理逻辑（比如 centralized logging），您可以添加 &quot;error&quot; 事件监听器。</p>
 <pre><code class="lang-js">app.on(&#39;error&#39;, function(err){
   log.error(&#39;server error&#39;, err);
 });</code></pre>
@@ -219,68 +219,61 @@ throw err;</code></pre>
 <li><code>ctx.lastModified=</code></li>
 <li><code>ctx.etag=</code></li>
 </ul>
-</div></section><section><div class="content"><h1 id="request">Request</h1>
-<p>  A Koa <code>Request</code> object is an abstraction on top of node&#39;s vanilla request object,
-  providing additional functionality that is useful for every day HTTP server
-  development.</p>
+</div></section><section><div class="content"><h1 id="-request-">请求(Request)</h1>
+<p>  Koa 的 <code>Request</code> 对象是对 node 的 request 进一步抽象和封装，提供了日常 HTTP 服务器开发中一些有用的功能。</p>
 <h2 id="api">API</h2>
 <h3 id="req-header">req.header</h3>
-<p> Request header object.</p>
+<p>  请求头对象</p>
 <h3 id="req-method">req.method</h3>
-<p>  Request method.</p>
+<p>  请求方法</p>
 <h3 id="req-method-">req.method=</h3>
-<p>  Set request method, useful for implementing middleware
-  such as <code>methodOverride()</code>.</p>
+<p>  设置请求方法，在实现中间件时非常有用，比如 <code>methodOverride()</code>。</p>
 <h3 id="req-length">req.length</h3>
-<p>  Return request Content-Length as a number when present, or <code>undefined</code>.</p>
+<p>  以数字的形式返回 request 的内容长度(Content-Length)，或者返回 <code>undefined</code>。</p>
 <h3 id="req-url">req.url</h3>
-<p>  Get request URL.</p>
+<p>  获得请求url地址。</p>
 <h3 id="req-url-">req.url=</h3>
-<p>  Set request URL, useful for url rewrites.</p>
+<p>  设置请求地址，用于重写url地址时。</p>
 <h3 id="req-originalurl">req.originalUrl</h3>
-<p>  Get request original URL.</p>
+<p>  获取请求原始地址。</p>
 <h3 id="req-path">req.path</h3>
-<p>  Get request pathname.</p>
+<p>  获取请求路径名。</p>
 <h3 id="req-path-">req.path=</h3>
-<p>  Set request pathname and retain query-string when present.</p>
+<p>  设置请求路径名，并保留请求参数(就是url中?后面的部分)。</p>
 <h3 id="req-querystring">req.querystring</h3>
-<p>  Get raw query string void of <code>?</code>.</p>
+<p>  获取查询参数字符串(url中?后面的部分)，不包含 ?。</p>
 <h3 id="req-querystring-">req.querystring=</h3>
-<p>  Set raw query string.</p>
+<p>  设置查询参数。</p>
 <h3 id="req-search">req.search</h3>
-<p>  Get raw query string with the <code>?</code>.</p>
+<p>  获取查询参数字符串，包含 ?。</p>
 <h3 id="req-search-">req.search=</h3>
-<p>  Set raw query string.</p>
+<p>  设置查询参数字符串。</p>
 <h3 id="req-host">req.host</h3>
-<p>  Get host (hostname:port) when present. Supports <code>X-Forwarded-Host</code>
-  when <code>app.proxy</code> is <strong>true</strong>, otherwise <code>Host</code> is used.</p>
+<p>  获取 host (hostname:port)。 当 <code>app.proxy</code> 设置为 <strong>true</strong> 时，支持 <code>X-Forwarded-Host</code>。</p>
 <h3 id="req-hostname">req.hostname</h3>
-<p>  Get hostname when present. Supports <code>X-Forwarded-Host</code>
-  when <code>app.proxy</code> is <strong>true</strong>, otherwise <code>Host</code> is used.</p>
+<p>  获取 hostname。当 <code>app.proxy</code> 设置为 <strong>true</strong> 时，支持 <code>X-Forwarded-Host</code>。</p>
 <h3 id="req-type">req.type</h3>
-<p>  Get request <code>Content-Type</code> void of parameters such as &quot;charset&quot;.</p>
+<p>  获取请求 <code>Content-Type</code>，不包含像 &quot;charset&quot; 这样的参数。</p>
 <pre><code class="lang-js">var ct = this.request.type;
 // =&gt; &quot;image/png&quot;</code></pre>
 <h3 id="req-charset">req.charset</h3>
-<p>  Get request charset when present, or <code>undefined</code>:</p>
+<p>  获取请求 charset，没有则返回 <code>undefined</code>:</p>
 <pre><code class="lang-js">this.request.charset
 // =&gt; &quot;utf-8&quot;</code></pre>
 <h3 id="req-query">req.query</h3>
-<p>  Get parsed query-string, returning an empty object when no
-  query-string is present. Note that this getter does <em>not</em>
-  support nested parsing.</p>
-<p>  For example &quot;color=blue&amp;size=small&quot;:</p>
+<p>  将查询参数字符串进行解析并以对象的形式返回，如果没有查询参数字字符串则返回一个空对象。</p>
+<p>  注意：该方法<strong>不</strong>支持嵌套解析。</p>
+<p>  比如 &quot;color=blue&amp;size=small&quot;:</p>
 <pre><code class="lang-js">{
   color: &#39;blue&#39;,
   size: &#39;small&#39;
 }</code></pre>
 <h3 id="req-query-">req.query=</h3>
-<p>  Set query-string to the given object. Note that this
-  setter does <em>not</em> support nested objects.</p>
+<p>  根据给定的对象设置查询参数字符串。</p>
+<p>  注意：该方法不支持嵌套对象。</p>
 <pre><code class="lang-js">this.query = { next: &#39;/login&#39; };</code></pre>
 <h3 id="req-fresh">req.fresh</h3>
-<p>  Check if a request cache is &quot;fresh&quot;, aka the contents have not changed. This
-  method is for cache negotiation between <code>If-None-Match</code> / <code>ETag</code>, and <code>If-Modified-Since</code> and <code>Last-Modified</code>. It should be referenced after setting one or more of these response headers.</p>
+<p>  检查请求缓存是否 &quot;fresh&quot;(内容没有发生变化)。该方法用于在 <code>If-None-Match</code> / <code>ETag</code>, <code>If-Modified-Since</code> 和 <code>Last-Modified</code> 中进行缓存协调。当在 response headers 中设置一个或多个上述参数后，该方法应该被使用。</p>
 <pre><code class="lang-js">this.set(&#39;ETag&#39;, &#39;123&#39;);
 
 // cache is ok
@@ -293,34 +286,27 @@ if (this.fresh) {
 // fetch new data
 this.body = yield db.find(&#39;something&#39;);</code></pre>
 <h3 id="req-stale">req.stale</h3>
-<p>  Inverse of <code>req.fresh</code>.</p>
+<p>  与 <code>req.fresh</code> 相反。</p>
 <h3 id="req-protocol">req.protocol</h3>
-<p>  Return request protocol, &quot;https&quot; or &quot;http&quot;. Supports <code>X-Forwarded-Proto</code>
-  when <code>app.proxy</code> is <strong>true</strong>.</p>
+<p>  返回请求协议，&quot;https&quot; 或者 &quot;http&quot;。 当 <code>app.proxy</code> 设置为 <strong>true</strong> 时，支持 <code>X-Forwarded-Host</code>。</p>
 <h3 id="req-secure">req.secure</h3>
-<p>  Shorthand for <code>this.protocol == &quot;https&quot;</code> to check if a request was
-  issued via TLS.</p>
+<p>  简化版 <code>this.protocol == &quot;https&quot;</code>，用来检查请求是否通过 TLS 发送。</p>
 <h3 id="req-ip">req.ip</h3>
-<p>  Request remote address. Supports <code>X-Forwarded-For</code> when <code>app.proxy</code>
-  is <strong>true</strong>.</p>
+<p>  请求远程地址。 当 <code>app.proxy</code> 设置为 <strong>true</strong> 时，支持 <code>X-Forwarded-Host</code>。</p>
 <h3 id="req-ips">req.ips</h3>
-<p>  When <code>X-Forwarded-For</code> is present and <code>app.proxy</code> is enabled an array
-  of these ips is returned, ordered from upstream -&gt; downstream. When disabled
-  an empty array is returned.</p>
+<p>  当 <code>X-Forwarded-For</code> 存在并且 <code>app.proxy</code> 有效，将会返回一个有序（从 upstream 到 downstream）ip 数组。
+  否则返回一个空数组。</p>
 <h3 id="req-subdomains">req.subdomains</h3>
-<p>  Return subdomains as an array.</p>
-<p>  Subdomains are the dot-separated parts of the host before the main domain of
-  the app. By default, the domain of the app is assumed to be the last two
-  parts of the host. This can be changed by setting <code>app.subdomainOffset</code>.</p>
-<p>  For example, if the domain is &quot;tobi.ferrets.example.com&quot;:
-  If <code>app.subdomainOffset</code> is not set, this.subdomains is <code>[&quot;ferrets&quot;, &quot;tobi&quot;]</code>.
-  If <code>app.subdomainOffset</code> is 3, this.subdomains is <code>[&quot;tobi&quot;]</code>.</p>
+<p>  以数组形式返回子域名。</p>
+<p>  子域名是在host中逗号分隔的主域名前面的部分。默认情况下，应用的域名假设为host中最后两部分。其可通过设置 <code>app.subdomainOffset</code> 进行更改。</p>
+<p>  举例来说，如果域名是 &quot;tobi.ferrets.example.com&quot;:</p>
+<p>  如果没有设置 <code>app.subdomainOffset</code>，其 subdomains 为 <code>[&quot;ferrets&quot;, &quot;tobi&quot;]</code>。
+  如果设置 <code>app.subdomainOffset</code> 为3，其 subdomains 为 <code>[&quot;tobi&quot;]</code>。</p>
 <h3 id="req-is-type-">req.is(type)</h3>
-<p>  Check if the incoming request contains the &quot;Content-Type&quot;
-  header field, and it contains any of the give mime <code>type</code>s.
-  If there is no request body, <code>undefined</code> is returned.
-  If there is no content type, or the match fails <code>false</code> is returned.
-  Otherwise, it returns the matching content-type.</p>
+<p>  检查请求所包含的 &quot;Content-Type&quot; 是否为给定的 type 值。
+  如果没有 request body，返回 <code>undefined</code>。
+  如果没有 content type，或者匹配失败，返回 <code>false</code>。
+  否则返回匹配的 content-type。</p>
 <pre><code class="lang-js">// With Content-Type: text/html; charset=utf-8
 this.is(&#39;html&#39;); // =&gt; &#39;html&#39;
 this.is(&#39;text/html&#39;); // =&gt; &#39;text/html&#39;
@@ -332,29 +318,26 @@ this.is(&#39;application/json&#39;); // =&gt; &#39;application/json&#39;
 this.is(&#39;html&#39;, &#39;application/*&#39;); // =&gt; &#39;application/json&#39;
 
 this.is(&#39;html&#39;); // =&gt; false</code></pre>
-<p>  For example if you want to ensure that
-  only images are sent to a given route:</p>
+<p>  比如说您希望保证只有图片发送给指定路由：</p>
 <pre><code class="lang-js">if (this.is(&#39;image/*&#39;)) {
   // process
 } else {
   this.throw(415, &#39;images only!&#39;);
 }</code></pre>
 <h3 id="content-negotiation">Content Negotiation</h3>
-<p>  Koa&#39;s <code>request</code> object includes helpful content negotiation utilities powered by <a href="http://github.com/expressjs/accepts">accepts</a> and <a href="https://github.com/federomero/negotiator">negotiator</a>. These utilities are:</p>
+<p>  Koa <code>request</code> 对象包含 content negotiation 功能（由 <a href="http://github.com/expressjs/accepts">accepts</a> 和 <a href="https://github.com/federomero/negotiator">negotiator</a> 提供）：</p>
 <ul>
 <li><code>req.accepts(types)</code></li>
 <li><code>req.acceptsEncodings(types)</code></li>
 <li><code>req.acceptsCharsets(charsets)</code></li>
-<li><p><code>req.acceptsLanguages(langs)</code></p>
-<p>If no types are supplied, <strong>all</strong> acceptable types are returned.</p>
-<p>If multiple types are supplied, the best match will be returned. If no matches are found, a <code>false</code> is returned, and you should send a <code>406 &quot;Not Acceptable&quot;</code> response to the client.</p>
-<p>In the case of missing accept headers where any type is acceptable, the first type will be returned. Thus, the order of types you supply is important.</p>
-</li>
+<li><code>req.acceptsLanguages(langs)</code></li>
 </ul>
+<p>  如果没有提供 types，将会返回<strong>所有的</strong>可接受类型。</p>
+<p>  如果提供多种 types，将会返回最佳匹配类型。如果没有匹配上，则返回 <code>false</code>，您应该给客户端返回 <code>406 &quot;Not Acceptable&quot;</code>。</p>
+<p>  为了防止缺少 accept headers 而导致可以接受任意类型，将会返回第一种类型。因此，您提供的类型顺序非常重要。</p>
 <h3 id="req-accepts-types-">req.accepts(types)</h3>
-<p>  Check if the given <code>type(s)</code> is acceptable, returning the best match when true, otherwise <code>false</code>. The <code>type</code> value may be one or more mime type string
-  such as &quot;application/json&quot;, the extension name
-  such as &quot;json&quot;, or an array <code>[&quot;json&quot;, &quot;html&quot;, &quot;text/plain&quot;]</code>.</p>
+<p>  检查给定的类型 <code>types(s)</code> 是否可被接受，当为 true 时返回最佳匹配，否则返回 <code>false</code>。<code>type</code> 的值可以是一个或者多个 mime 类型字符串。
+  比如 &quot;application/json&quot; 扩展名为 &quot;json&quot;，或者数组 <code>[&quot;json&quot;, &quot;html&quot;, &quot;text/plain&quot;]</code>。</p>
 <pre><code class="lang-js">// Accept: text/html
 this.accepts(&#39;html&#39;);
 // =&gt; &quot;html&quot;
@@ -384,8 +367,7 @@ this.accepts(&#39;html&#39;, &#39;json&#39;);
 // =&gt; &quot;html&quot;
 this.accepts(&#39;json&#39;, &#39;html&#39;);
 // =&gt; &quot;json&quot;</code></pre>
-<p>  You may call <code>this.accepts()</code> as may times as you like,
-  or use a switch:</p>
+<p>  <code>this.accepts()</code> 可以被调用多次，或者使用 switch:</p>
 <pre><code class="lang-js">switch (this.accepts(&#39;json&#39;, &#39;html&#39;, &#39;text&#39;)) {
   case &#39;json&#39;: break;
   case &#39;html&#39;: break;
@@ -393,53 +375,49 @@ this.accepts(&#39;json&#39;, &#39;html&#39;);
   default: this.throw(406, &#39;json, html, or text only&#39;);
 }</code></pre>
 <h3 id="req-acceptsencodings-encodings-">req.acceptsEncodings(encodings)</h3>
-<p>  Check if <code>encodings</code> are acceptable, returning the best match when true, otherwise <code>false</code>. Note that you should include <code>identity</code> as one of the encodings!</p>
+<p>  检查 <code>encodings</code> 是否可以被接受，当为 <code>true</code> 时返回最佳匹配，否则返回 <code>false</code>。
+  注意：您应该在 encodings 中包含 <code>identity</code>。</p>
 <pre><code class="lang-js">// Accept-Encoding: gzip
 this.acceptsEncodings(&#39;gzip&#39;, &#39;deflate&#39;, &#39;identity&#39;);
 // =&gt; &quot;gzip&quot;
 
 this.acceptsEncodings([&#39;gzip&#39;, &#39;deflate&#39;, &#39;identity&#39;]);
 // =&gt; &quot;gzip&quot;</code></pre>
-<p>  When no arguments are given all accepted encodings
-  are returned as an array:</p>
+<p>  当没有传递参数时，返回包含所有可接受的 encodings 的数组：</p>
 <pre><code class="lang-js">// Accept-Encoding: gzip, deflate
 this.acceptsEncodings();
 // =&gt; [&quot;gzip&quot;, &quot;deflate&quot;, &quot;identity&quot;]</code></pre>
-<p>  Note that the <code>identity</code> encoding (which means no encoding) could be unacceptable if the client explicitly sends <code>identity;q=0</code>. Although this is an edge case, you should still handle the case where this method returns <code>false</code>.</p>
+<p>  注意：如果客户端直接发送 <code>identity;q=0</code> 时，<code>identity</code> encoding（表示no encoding） 可以不被接受。虽然这是一个边界情况，您仍然应该处理这种情况。</p>
 <h3 id="req-acceptscharsets-charsets-">req.acceptsCharsets(charsets)</h3>
-<p>  Check if <code>charsets</code> are acceptable, returning
-  the best match when true, otherwise <code>false</code>.</p>
+<p>  检查 <code>charsets</code> 是否可以被接受，如果为 <code>true</code> 则返回最佳匹配， 否则返回 <code>false</code>。</p>
 <pre><code class="lang-js">// Accept-Charset: utf-8, iso-8859-1;q=0.2, utf-7;q=0.5
 this.acceptsCharsets(&#39;utf-8&#39;, &#39;utf-7&#39;);
 // =&gt; &quot;utf-8&quot;
 
 this.acceptsCharsets([&#39;utf-7&#39;, &#39;utf-8&#39;]);
 // =&gt; &quot;utf-8&quot;</code></pre>
-<p>  When no arguments are given all accepted charsets
-  are returned as an array:</p>
+<p>  当没有传递参数时， 返回包含所有可接受的 charsets 的数组：</p>
 <pre><code class="lang-js">// Accept-Charset: utf-8, iso-8859-1;q=0.2, utf-7;q=0.5
 this.acceptsCharsets();
 // =&gt; [&quot;utf-8&quot;, &quot;utf-7&quot;, &quot;iso-8859-1&quot;]</code></pre>
 <h3 id="req-acceptslanguages-langs-">req.acceptsLanguages(langs)</h3>
-<p>  Check if <code>langs</code> are acceptable, returning
-  the best match when true, otherwise <code>false</code>.</p>
+<p>  检查 <code>langs</code> 是否可以被接受，如果为 <code>true</code> 则返回最佳匹配，否则返回 <code>false</code>。</p>
 <pre><code class="lang-js">// Accept-Language: en;q=0.8, es, pt
 this.acceptsLanguages(&#39;es&#39;, &#39;en&#39;);
 // =&gt; &quot;es&quot;
 
 this.acceptsLanguages([&#39;en&#39;, &#39;es&#39;]);
 // =&gt; &quot;es&quot;</code></pre>
-<p>  When no arguments are given all accepted languages
-  are returned as an array:</p>
+<p>  当没有传递参数时，返回包含所有可接受的 langs 的数组：</p>
 <pre><code class="lang-js">// Accept-Language: en;q=0.8, es, pt
 this.acceptsLanguages();
 // =&gt; [&quot;es&quot;, &quot;pt&quot;, &quot;en&quot;]</code></pre>
 <h3 id="req-idempotent">req.idempotent</h3>
-<p>  Check if the request is idempotent.</p>
+<p>  检查请求是否为幂等(idempotent)。</p>
 <h3 id="req-socket">req.socket</h3>
-<p>  Return the request socket.</p>
+<p>  返回请求的socket。</p>
 <h3 id="req-get-field-">req.get(field)</h3>
-<p>  Return request header.</p>
+<p>  返回请求 header 中对应 field 的值。</p>
 </div></section><section><div class="content"><h1 id="response">Response</h1>
 <p>  A Koa <code>Response</code> object is an abstraction on top of node&#39;s vanilla response object,
   providing additional functionality that is useful for every day HTTP server

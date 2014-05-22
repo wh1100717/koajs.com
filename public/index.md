@@ -78,7 +78,7 @@ app.listen(3000);
   应用配置是 `app` 实例属性，目前支持的配置项如下：
 
   - `app.name` 应用名称（可选项）
-  - `app.env` 默认为 \_\_NODE_ENV\_\_ 或者 `development`
+  - `app.env` 默认为 __NODE_ENV__ 或者 `development`
   - `app.proxy` 如果为 `true`，则解析 "Host" 的 header 域，并支持 `X-Forwarded-Host`
   - `app.subdomainOffset` 默认为2，表示 `.subdomains` 所忽略的字符偏移量。
 
@@ -142,7 +142,7 @@ this.cookies.set('name', 'tobi', { signed: true });
 
 ## 错误处理
 
-  默认情况下Koa会将所有错误信息输出到 stderr，除非 \_\_NODE\_ENV\_\_ 是 "test"。为了实现自定义错误处理逻辑（比如 centralized logging），您可以添加 "error" 事件监听器。
+  默认情况下Koa会将所有错误信息输出到 stderr，除非 __NODE\_ENV__ 是 "test"。为了实现自定义错误处理逻辑（比如 centralized logging），您可以添加 "error" 事件监听器。
 
 ```js
 app.on('error', function(err){
